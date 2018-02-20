@@ -1,0 +1,71 @@
+@import "fast-grid/default";
+@import "fast-grid/functions";
+@import "fast-grid/container";
+@import "fast-grid/row";
+@import "fast-grid/col";
+@import "fast-grid/translate";
+
+
+
+.container {
+	width: 100%;
+	margin: auto;
+	@include grid-breakpoint(sm) {
+		width: 720px;
+	}
+
+	@include grid-breakpoint(md) {
+		width: 960px;
+	}
+
+	@include grid-breakpoint(lg) {
+		width: 1140px;
+	}
+}
+
+.full-container {
+	padding: 110px 0;
+}
+
+.row {
+	@include grid-row();
+}
+
+.col {
+	&_2 {
+		@include grid-col(12 12 2 2 2);
+		padding: 0 15px;
+	}
+	&_3 {
+		@include grid-col(12 12 6 3 3);
+		padding: 0 15px;
+	}
+	&_4 {
+		@include grid-col(12 12 4 4 4);
+		padding: 0 15px;
+	}
+	&_5 {
+		@include grid-col(12 12 12 5 5);
+		padding: 0 15px;
+	}
+	&_6 {
+		@include grid-col(12 12 6 6 6);
+		padding: 0 15px;
+	}
+	&_7 {
+		@include grid-col(12 12 12 7 7);
+		padding: 0 15px;
+	}
+	&_9 {
+		@include grid-col(12 12 9 9 9);
+		padding: 0 15px;
+	}
+	&_12 {
+		@include grid-col(12);
+		padding: 0 15px;
+	}
+}
+
+.align-center {
+	margin: auto;
+}

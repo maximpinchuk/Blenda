@@ -1,0 +1,134 @@
+// Блок с описанием преподавателя
+.teacher-about {
+	margin: 70px 0 0 0;
+	@include grid-breakpoint(sm) {
+		display: flex;
+		flex-direction: row-reverse;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+	.teacher-about__img-wrapper {
+		width: 100%;
+		height: 300px;
+		margin: 0;
+		@include grid-breakpoint(sm) {
+			width: 445px;
+			height: 580px;
+			// flex-basis: 445px;
+		}
+		.img-wrapper__img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+		}		
+	}
+	.teacher-about__descr-block {
+		padding: 0 15px;
+		@include grid-breakpoint(sm) {
+			flex-basis: 65%;
+			margin: 0 0 45px 0;
+		}
+		@include grid-breakpoint(md) {
+			flex-basis: 50%;
+		}
+		.descr-block__title {
+			margin: 50px 0 15px 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 1rem;
+			color: $accent-color;
+			text-transform: uppercase;
+		}
+		.descr-block__specialization {
+			margin: 0;
+			font-family: 'Lato', sans-serif;
+			font-size: 1.125rem;
+			color: #4c4c4c;
+			line-height: (24/18);
+		}
+		.descr-block__text {
+			margin: 40px 0 30px 0;
+			font-family: 'Lato', sans-serif;
+			font-size: 1.125rem;
+			color: #969696;
+			line-height: (24/18);
+			@include grid-breakpoint(sm) {
+				margin: 50px 0 75px 0;
+			}
+		}
+		.descr-block__btn {
+			display: inline-block;
+			border: 1px solid $accent-color;
+			padding: 15px 50px 15px 10px;
+			@include grid-breakpoint(xs) {
+				margin: 0 30px 0 0;
+				padding: 15px 50px 15px 30px;
+			}
+			@include grid-breakpoint(sm) {
+				display: inline;
+			}
+			@include grid-breakpoint(md) {
+				margin: 0 75px 0 0;
+				padding: 18px 50px 18px 30px;
+			}
+			.btn__icon {
+				right: 20px;
+			}
+		}
+		.descr-block__link {
+			@include grid-breakpoint(sm) {
+				display: none;
+			}
+			.link__text {
+				margin: 30px 30px 0 0;
+				font-size: 1rem;
+			}
+			&.desktop {
+				display: none;
+				@include grid-breakpoint(sm) {
+					margin: 30px 0 0 0;
+					display: inline-block;
+					font-family: 'Lato', sans-serif;
+					font-size: 1.125rem;
+					color: #4c4c4c;
+					text-decoration: underline;
+				}
+				@include grid-breakpoint(md) {
+					margin: 0;
+				}
+			}
+		}
+	}
+}
+
+
+// Цитата преподавателя
+.teacher-quote__icon-block {
+	@include grid-col(12 12 2 2 2);
+	@include grid-offset(null null 1 1 1);
+	padding: 0 15px;
+	.icon-block__icon {
+		width: 50px;
+		height: 50px;
+		@include grid-breakpoint(sm) {
+			width: 90px;
+			height: 90px;
+		}
+	}
+}
+.teacher-quote {
+	@include grid-col(12 12 9 7 6);
+	@include grid-offset(null null 1 1 1);
+	padding: 0 15px;
+	.teacher-quote__text {
+		margin: 35px 0 30px 0;
+		font-family: 'Lato', sans-serif;
+		font-size: 1.25rem;
+		color: #909090;
+		line-height: (38/20);
+		@include grid-breakpoint(sm) {
+			margin: 0 0 30px 0;
+		}
+	}
+}

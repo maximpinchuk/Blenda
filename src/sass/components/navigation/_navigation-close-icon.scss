@@ -1,0 +1,68 @@
+.nav__close {
+	position: fixed;
+	width: 27px;
+	height: 27px;
+	&.adaptive {
+		top: 21px;
+		right: 22px;
+		display: block;
+		@include grid-breakpoint(md) {
+			display: none;
+		}	
+	}
+	&.desktop {
+		display: none;
+		&.search {
+			top: 21px;
+			right: 22px;
+			display: block;
+			@include grid-breakpoint(md) {
+				top: 75px;
+				right: 80px;
+			}
+		}
+		@include grid-breakpoint(md) {
+			z-index: 4;
+			display: block;
+			top: 55px;
+			right: 125px;
+			cursor: pointer;
+			&:before {
+				transition: transform 0.2s;
+			}
+			&:after {
+				transition: transform 0.2s;
+			}
+			&:hover {
+				&:before {
+					transform: rotate(0);
+				}
+				&:after {
+					transform: rotate(0);
+				}
+			}
+		}
+	}
+	&:before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 25px;
+		height: 2px;
+		margin-top: -1px;
+		background: #6c6c6c;
+		transform: rotate(45deg);
+	}
+	&:after {
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 0;
+		width: 25px;
+		height: 2px;
+		margin-top: -1px;
+		background: #6c6c6c;
+		transform: rotate(-45deg);
+	}
+}

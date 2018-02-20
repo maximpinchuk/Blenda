@@ -1,0 +1,150 @@
+title = "Работы студентов и бэкстейдж"
+url = "/gallery/photoworks-backstage"
+layout = "default"
+meta_title = "Работы студентов и бэкстейдж"
+meta_description = "Работы студентов и бэкстейдж с курса"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Работы студентов и бэкстейдж"
+og_description = "Фотоработы студентов и бэкстейдж со съемок"
+og_image = "/banners/bg-gallery.jpg"
+
+[siteSearchInclude]
+==
+<?php
+use Spaced\Blenda\Models\Course;
+
+	function onStart() {
+		$this['courses'] = Course::get();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ 'assets/dist/img/students-backstage-works_bg.jpg'|theme }}" alt="">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link" href="{{ 'gallery'|page }}">Галерея</a>
+        <a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Фотоработы по курсам</a>
+	</div>
+	<h1 class="banner__title">Галерея фоторабот по курсам</h1>
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Галерея фоторабот по курсам</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Фотографии с занятий передают творческую атмосферу, которая характерна как для практических съемок с профессиональными моделями, так и для теоретических экскурсов в фотоискусство.</h3>
+		</div>
+	</div>
+</section>
+
+<section class="section">
+	<div class="swiper-container gallery-slider gallery-courses-slider">
+		<div class="swiper-wrapper">
+			{% for course in courses %}
+				<div class="swiper-slide">
+					<div class="gallery-slide-inner">
+						<figure class="gallery-slider__img-wrapper image-wrapper">
+							<img class="img-wrapper__img" src="{{ course.banner|media }}" alt="{{ course.title }}">
+						</figure>
+						<a class="gallery-slider__slide-title" href="../../courses/{{ course.slug }}">{{ course.title }}</a>
+						<p class="gallery-slider__slide-descr">{{ course.descr_short }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+		<!-- Add Arrows -->
+        <div class="gallery-slider__nav-block">
+			<div class="gallery-slider__swiper-button-prev swiper-button-prev">
+				<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+					<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+					<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+					<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+					<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+				</svg>
+			</div>
+			<div class="gallery-slider__swiper-button-next swiper-button-next">
+				<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+					<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+					<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+					<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+					<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+				</svg>
+			</div>
+			<div class="gallery-slider__swiper-pagination swiper-pagination"></div>
+		</div>
+	</div>
+
+	<div class="gallery-category-container">
+		<div class="row">
+			<div class="col_6">
+				<div class="gallery-category-slider__title-wrapper">
+					<h5 class="gallery-category-slider__title" data-bottom-top="transform: rotate(-90deg) translateX(-80%);" data-bottom="transform: rotate(-90deg) translateX(-100%);">фотоработы</h5>
+				</div>
+				<div class="swiper-container gallery-category-slider works" data-bottom-top="transform: translateY(70px);" data-bottom="transform: translateY(0);">
+					<div class="swiper-wrapper">
+						{% for course in courses %}
+							<div class="swiper-slide">
+								<a class="gallery-category-slider__link" href="photoworks/{{ course.slug }}">
+									<figure class="gallery-category-slider__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ course.gallery_students_banner|media }}" alt="{{ course.title }}">
+										<div class="link-block">
+											<span class="link link-block__link">
+												<span class="link__text">Перейти к курсу</span>
+												<span class="icon-block">
+													<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+												</span>
+											</span>
+										</div>
+									</figure>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="col_6">
+				<div class="gallery-category-slider__title-wrapper">
+					<h5 class="gallery-category-slider__title backstage" data-bottom-top="transform: rotate(-90deg) translateX(-120%);" data-bottom="transform: rotate(-90deg) translateX(-100%);">бэкстейдж со съемок</h5>
+				</div>
+				<div class="swiper-container gallery-category-slider backstage" data-bottom-top="transform: translateY(120px);" data-bottom="transform: translateY(0);">
+					<div class="swiper-wrapper">
+						{% for course in courses %}
+							<div class="swiper-slide">
+								<a class="gallery-category-slider__link" href="backstage/{{ course.slug }}">
+									<figure class="gallery-category-slider__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ course.gallery_backstage_banner|media }}" alt="{{ course.title }}">
+										<div class="link-block">
+											<span class="link link-block__link">
+												<span class="link__text">Перейти к курсу</span>
+												<span class="icon-block">
+													<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+												</span>
+											</span>
+										</div>
+									</figure>
+								</a>
+							</div>
+						{% endfor %}
+					</div>
+				</div>	
+			</div>
+		</div>
+	</div>
+</section>

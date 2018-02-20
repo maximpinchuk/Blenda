@@ -1,0 +1,166 @@
+title = "Новость"
+url = "/news/:slug"
+layout = "default"
+meta_title = "Новость"
+meta_description = "Новость"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Новость"
+
+[siteSearchInclude]
+==
+<?php
+use Indikator\Content\Models\News;
+
+	function onStart() {
+		$this['post'] = News::where('slug', '=', $this->param('slug'))->first();
+		$this['news'] = News::orderBy('published_at', 'desc')->where('slug', '!=', $this->param('slug'))->take(3)->get();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+{% put twitter_share %}
+	<script>
+		var socialLikesButtons = {
+		  	twitter: {
+		    	counterUrl: 'https://opensharecount.com/count.json?url={url}&callback=?',
+		    	convertNumber: function(data) {
+		      		return data.count;
+		    	}
+		  	}
+		};
+	</script>
+{% endput %}
+
+<section class="banner post">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ post.image|media }}" alt="{{ post.title }}">
+	</figure>
+	<div class="container post-banner-wrapper">
+		<div class="breadcrumbs post">
+			<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+			<a class="breadcrumbs__link" href="{{ 'news'|page }}">Новости</a>
+			<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">{{ post.title }}</a>
+		</div>
+		<h1 class="banner__title">{{ post.title }}</h1>
+		<div class="post-info__wrapper">
+			<div class="post-info__block w3">
+				<h5 class="post-info__title">дата</h5>
+				<span class="post-info__text">{{ post.published_at|date('d.m.Y') }}</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<article id="article" class="article">
+			{{ post.content|raw }}
+                        {% if post.files %}
+			    <div class="post-files">
+			    	<h6 class="post-files__title">Прикрепленные файлы</h6>
+			    	{% for item in post.files %}
+						<div class="post-files__file">
+							<a class="file__link" href="{{ item.file_path|media }}">{{ item.file_name }}</a>
+						</div>
+			    	{% endfor %}
+			    </div>
+		        {% endif %}
+			<div class="post-after">
+				<p class="post-after__title">Поделиться в социальных сетях</p>
+				<div class="social-likes social-likes_light" data-url="{{ ''|page }}" data-zeroes="yes">
+					<div class="vkontakte" title="Vkontakte">Вконтакте</div>
+					<div class="facebook" title="Facebook">Facebook</div>
+					<div class="twitter" title="Twitter">Twitter</div>
+				</div>
+			</div>
+			<div id="hypercomments_widget" class="comments-block"></div>
+		</article>
+		<aside class="aside news-aside">
+			<h4 class="aside__title">Последние новости</h4>
+			{% for item in news %}
+				<a class="post-preview news" href="../{{ item.slug }}">
+			        {% if item.image %}
+			        	<figure class="post-preview__img-wrapper image-wrapper">
+							<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.title }}">
+						</figure>
+			        {% endif %}
+					<div class="post-preview__short-descr">
+						<span class="short-descr__date">{{ item.published_at|date('d.m.Y') }}</span>
+						<h3 class="short-descr__title">{{ item.title }}</h3>
+				        <p class="short-descr__descr">{{ item.summary }}</p>
+				        <span class="short-descr__link">Читать полностью</span>
+			        </div>
+		        </a>
+			{% endfor %}
+		</aside>
+	</div>
+</section>
+
+{% put scripts %}
+
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '387697734979512',
+          xfbml      : true,
+          version    : 'v2.10'
+        });
+        FB.AppEvents.logPageView();
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+	<script>
+		_hcwp = window._hcwp || [];
+		_hcwp.push({widget:"Stream", widget_id: 95786});
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/95786/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+	</script>
+
+        <script>
+	    function fbCounts() {
+	        setTimeout(function(){
+    	        var promise = fetch('https://graph.facebook.com/?id={{ ''|page }}')
+    	            .then(function(response) {
+                        console.log(response.status); // 200
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log(data.share.share_count); // iliakan
+                        var fbCounters = $('.social-likes__counter_facebook');
+                        fbCounters.text(data.share.share_count);
+                        return data.share.share_count;
+                    })
+                    .catch( alert );
+	        }, 2000);
+	    }
+	    fbCounts();
+
+        function images() {
+			var article = document.getElementById('article'); 
+			var images = article.getElementsByTagName('img');
+			for (var i = 0; i < images.length; i++) {
+				images[i].removeAttribute('style');
+			}
+		};
+		images();
+	</script>
+{% endput %}

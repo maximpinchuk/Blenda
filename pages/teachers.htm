@@ -1,0 +1,68 @@
+title = "Преподаватели"
+url = "/teachers"
+layout = "default"
+meta_title = "Преподаватели"
+meta_description = "Преподаватели"
+is_hidden = 0
+banner_image = "/page_b/bg-teachers.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Преподаватели"
+
+[siteSearchInclude]
+==
+<?php
+use Spaced\Blenda\Models\Teacher;
+
+	function onStart() {
+		$this['teachers'] = Teacher::where('teacher_activate', '=', '1')->where('teacher_page_published', true)->orderBy('teacher_order', 'asc')->get();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Преподаватели</a>
+	</div>
+	<h1 class="banner__title">Наши преподаватели</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section teachers-section container">
+	{% for teacher in teachers %}
+		<div class="teacher-card" data-bottom-top="transform: translateY(80px);" data-center-center="transform: translateY(0);">
+			<a href="{{ teacher.slug }}">
+				<figure class="teacher-card__img-wrapper image-wrapper" data-bottom-top="transform: translateY(20px);" data-center-center="transform: translateY(0);">
+					<img class="img-wrapper__img" src="{{ teacher.photo_portrait|media }}" alt="{{ teacher.name }}">
+				</figure>
+			</a>
+			<div class="teacher-card__short-info" data-bottom-top="transform: translateY(50px);" data-center-center="transform: translateY(0);">
+				<a href="{{ teacher.slug }}">
+					<h4 class="short-info__name">{{ teacher.name }}</h4>
+				</a>
+				<p class="short-info__subtitle">специализация</p>
+				<p class="short-info__specializations">{{ teacher.specializations }}</p>
+				<a class="link short-info__link" href="{{ teacher.slug }}">
+					<span class="link__text">Подробнее о преподавателе</span>
+					<span class="icon-block">
+						<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__dark.svg'|theme }}" alt="icon">
+					</span>
+				</a>
+			</div>
+		</div>
+	{% endfor %}
+</section>

@@ -1,0 +1,208 @@
+[Getresponse]
+
+[GetResponseGift]
+==
+<div class="remodal-bg">
+    <div class="remodal large popup" data-remodal-id="subscribe">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <div class="row">
+            <div class="col_5">
+                <h4 class="popup__title">Подписаться на рассылку</h4>
+            </div>
+            <div class="col_7">
+                <p class="popup__subtitle">Мы обещаем присылать Вам только самые интересные и полезные материалы не чаще двух раз в неделю.</p>
+            </div>
+        </div>
+        <form class="form popup-form" data-request="onSend" data-request-update="popups: '.remodals'" data-request-validate data-request-success="$('[data-remodal-id=success-subscribe]').remodal().open();" data-request-error="$('[data-remodal-id=error]').remodal().open();">
+            <div class="form__row">
+                <fieldset class="form-fieldset col_6 form-group">
+                    <label class="form-fieldset__label">Введите вашу почту</label>
+                    <input class="form-fieldset__input" type="email" name="email" placeholder="example@mail.com">
+                    <span class="form-fieldset__error" data-validate-for="email"></span>
+                </fieldset>
+                <button class="btn form__btn small white">
+                    <span class="btn__text">подписаться</span>
+                    <span class="btn__icon"></span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="pre-gift">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">Спасибо за заявку!</h4>
+        <p class="popup__subtitle center">Наш администратор свяжется с Вами в ближайшее время.А пока держите подарок – рецепт 7 волшебных кадров!</p>
+        <button class="btn btn--alone large white" data-remodal-target="gift">
+            <span class="btn__text">получить подарок</span>
+            <span class="btn__icon"></span>
+        </button>
+    </div>
+</div> -->
+
+{% component 'GetResponseGift' %}
+
+{% component 'GetResponseGiftSmall' %}
+
+<!-- <div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="success-gift">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">До получения подарка остался 1 клик!</h4>
+        <p class="popup__subtitle center">Проверьте свою почту и подтвердите подписку по ссылке в письме. Это нужно для того, чтобы Ваш адрес не попал в нашу базу по ошибке.</p>
+    </div>
+</div> -->
+
+<div class="remodal-bg">
+	<div class="remodal large popup" data-remodal-id="learn-about" id="learn-cta-form">
+		<div data-remodal-action="close" class="remodal-close">
+			<svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+				<polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+			</svg>
+		</div>
+        <div class="row">
+            <div class="col_5">
+                <h4 class="popup__title">{{ learnPopupForm.property('form_title') }}</h4>
+            </div>
+            <div class="col_7">
+                <p class="popup__subtitle">{{ learnPopupForm.property('form_subtitle') }}</p>
+            </div>
+        </div>
+        <form class="form popup-form" data-request="{{ learnPopupForm }}::onFormSubmit" data-request-validate>
+        	{{ form_token() }}
+        	<input type="hidden" name="course" value="{{ course.title }}">
+        	<input type="hidden" name="theme" value="Подобрать курс">
+            
+            <div class="form_flash" id="{{ learnPopupForm }}_forms_flash"></div>
+			
+            <div class="form__row custom-row">
+                <fieldset class="form-fieldset form-group">
+                    <label class="form-fieldset__label">Введите ваше имя</label>
+                    <input class="form-fieldset__input" type="text" name="name" placeholder="Иван">
+                    <span class="form-fieldset__error" data-validate-for="name"></span>
+                </fieldset>
+                <fieldset class="form-fieldset form-group">
+                    <label class="form-fieldset__label">Введите ваш телефон</label>
+                    <input class="form-fieldset__input input-tel" type="tel" name="tel" maxlength="20" placeholder="+ 375 (__) ___-__-__">
+                    <span class="form-fieldset__error" data-validate-for="tel"></span>
+                </fieldset>
+                <button class="btn form__btn small white" {{ learnPopupForm.property('btn_script') }}>
+                    <span class="btn__text">{{ learnPopupForm.property('form_btn_text') }}</span>
+                    <span class="btn__icon"></span>                
+                </button>
+            </div>
+        </form>
+	</div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="success-subscribe">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">{{ learnPopupForm.property('messages_success_title') }}</h4>
+        <p class="popup__subtitle center">{{ learnPopupForm.property('messages_success_subtitle') }}</p>
+    </div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="learn-success">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">{{ learnPopupForm.property('messages_success_title') }}</h4>
+        <p class="popup__subtitle center">{{ learnPopupForm.property('messages_success_subtitle') }}</p>
+    </div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="success">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">Ваша заявка отправлена.</h4>
+        <p class="popup__subtitle center">Мы скоро свяжемся с вами!</p>
+    </div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal small popup" data-remodal-id="error">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h4 class="popup__title center">В процессе обработки формы что-то поломалось.</h4>
+        <p class="popup__subtitle center">Просим прощения за временные неудобства!</p>
+    </div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal large conf-policy popup" data-remodal-id="conf-policy">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h3 class="conf-policy__title">Политика конфиденциальности</h3>
+        <p class="conf-policy__text">Администрация Сайта с уважением относится к правам посетителей Сайта. Мы безоговорочно признаем важность конфиденциальности личной информации посетителей нашего Сайта. Данная страница содержит сведения о том, какую информацию мы получаем и собираем, когда Вы пользуетесь Сайтом. Мы надеемся, что эти сведения помогут Вам принимать осознанные решения в отношении предоставляемой нам личной информации. Настоящая Политика конфиденциальности распространяется только на Сайт и на информацию, собираемую этим сайтом и через его посредство. Она не распространяется ни на какие другие сайты и не применима к веб-сайтам третьих лиц, с которых могут делаться ссылки на Сайт.</p>
+        <h4 class="conf-policy__subtitle">Автоматически собираемая информация, не относящаяся к персональным данным</h4>
+        <p class="conf-policy__text">Иногда мы можем собирать информацию о Вас, не относящуюся к Персональным данным. Примерами такого рода информации могут служить тип используемого Вами веб-браузера, тип операционной системы, а также доменное имя сайта, посредством ссылки с которого Вы попали на наш Сайт. Сведения, которые мы получаем на Сайте, могут быть использованы для того, чтобы облегчить Вам пользование Сайтом, включая, но не ограничиваясь: организация Сайта наиболее удобным для пользователей способом;  предоставление возможности подписаться на почтовую рассылку по специальным предложениям и темам, если Вы хотите получать такие уведомления; Сайт собирает персональные данные (далее  Персональные данные), которые Вы предоставляете добровольно при заказе телефонного звонка либо размещении заказа на Сайте. Понятие персональные данные в данном случае включают информацию, которая определяет Вас как конкретное лицо, например, Ваше имя, номер телефона. Сайт не будет собирать данные, позволяющие идентифицировать Вашу личность (такие, например, как Ваша фамилия, адрес, номер телефона, адрес электронной почты), если Вы сами добровольно не предоставите нам такие данные. В случае предоставления Вами Сайту Персональных данных, будет хранить такую информацию о Вас только для связи с Вами. Кроме того, мы используем стандартные журналы учета веб-сервера для подсчета количества посетителей и оценки технических возможностей нашего Сайта. Мы используем эту информацию для того, чтобы определить, сколько человек посещает Сайт и организовать страницы наиболее удобным для пользователей способом, обеспечить соответствие Сайта используемым браузерам, и сделать содержание наших страниц максимально полезным для наших посетителей. Мы записываем сведения по перемещениям на Сайте, но не об отдельных посетителях Сайта, так что никакая конкретная информация относительно Вас лично не будет сохраняться или использоваться Администрацией Сайта без Вашего согласия.</p>
+        <h4 class="conf-policy__subtitle">Совместное использование информации</h4>
+        <p class="conf-policy__text">Администрация Сайта ни при каких обстоятельствах не продает и не отдает в пользование Вашу личную информацию, каким бы то ни было третьим сторонам. Мы также не раскрываем предоставленную Вами личную информацию за исключением случаев предусмотренных законодательством Республики Беларусь.</p>
+        <h4 class="conf-policy__subtitle">Отказ от ответственности</h4>
+        <p class="conf-policy__text">Помните, передача информации личного характера при посещении сторонних сайтов, включая сайты компаний-партнеров, даже если веб-сайт содержит ссылку на Сайт или на Сайте есть ссылка на эти веб-сайты, не подпадает под действия данного документа. Администрация Сайта не несет ответственности за действия других веб-сайтов. Процесс сбора и передачи информации личного характера при посещении этих сайтов регламентируется документом Защита информации личного характера или аналогичным, расположенном на сайтах этих компаний.</p>
+        <h4 class="conf-policy__subtitle">Контактная информация</h4>
+        <p class="conf-policy__text">Если Вы предоставили свои Персональные данные и хотите, чтобы такая информация была изменена или исключена из наших баз данных, или если Вы хотите узнать какими Персональными данными о Вас мы располагаем, Вы можете направить нам запрос по адресу. Мы приложим все усилия для того, чтобы ответить на Ваш запрос.</p>
+        <h4 class="conf-policy__subtitle">Изменения на Сайте</h4>
+        <p class="conf-policy__text">Мы оставляем за собой право в любое время и без уведомления закрыть или изменить любую услугу на Сайте.</p>
+    </div>
+</div>
+
+<div class="remodal-bg">
+    <div class="remodal large conf-policy popup" data-remodal-id="material-rules">
+        <div data-remodal-action="close" class="remodal-close">
+            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+            </svg>
+        </div>
+        <h3 class="conf-policy__title">Правила использования материалов сайта</h3>
+        <h4 class="conf-policy__subtitle">Авторские права</h4>
+        <p class="conf-policy__text">Все публикуемые на сайте https://www.blenda.by/ материалы являются собственностью фотошколы BLENDA (далее – Правообладатель), за исключением тех, в качестве правообладателей или источников которых указаны третьи лица.<br>Под материалами сайта понимаются сообщения, статьи, фото, видеоизображения, графические изображения, звуковые произведения и другие данные.</p>
+        <h4 class="conf-policy__subtitle">Условия использования материалов сайта</h4>
+        <p class="conf-policy__text">При использовании материалов необходимо указать ссылку на Правообладателя материалов, как на источник материалов следующим образом:</p>
+        <ul class="conf-policy__list">
+            <li class="list__item">При использовании материалов на любом материальном носителе (бумага, пленка и т. п.), в каждом случае использования – в виде ссылки, например, «Источник: Фотошкола BLENDA»;</li>
+            <li class="list__item">При использовании информации в электронном виде (интернет-сайт, электронный файл и т. п.), в каждом случае использования вставлять гиперссылку на главную страницу сайта https://www.blenda.by/;</li>
+            <li class="list__item">При использовании в печатных изданиях – в виде указания наименования Правообладателя материалов: например, «Источник: Фотошкола BLENDA»;</li>
+            <li class="list__item">Использование переводных, адаптированных или иных материалов из вторичных источников, в которых имеется ссылка на Правообладателя материалов, как на источник материалов, возможно только со ссылкой на Правообладателя материалов.</li>
+        </ul>
+        <h4 class="conf-policy__subtitle">Использование материалов физическими лицами в некоммерческих целях</h4>
+        <p class="conf-policy__text">Физические лица могут использовать материалы сайта https://www.blenda.by/ в полном объеме исключительно для личного пользования (без извлечения выгоды), включая использование в блогах, на личных страницах социальных сетей и т. п. только с указанием источника и проставлением гиперссылки на сайт https://www.blenda.by/.</p>
+        <h4 class="conf-policy__subtitle">Использование материалов юридическими лицами в коммерческих целях</h4>
+        <p class="conf-policy__text">Не допускается копирование, распространение, передача третьим лицам, опубликование или иное использование в коммерческих целях материалов сайта без получения письменного разрешения  фотошколы BLENDA или другого законного владельца интеллектуальных прав.</p>
+        <p class="conf-policy__text"><b>По всем вопросам получения согласия на использование материалов сайта просьба обращаться:</b></p>
+        <p class="conf-policy__text">Адрес: 220030, Беларусь, г. Минск, ул. Октябрьская, 16/4.<br>Электронный адрес: info@blenda.by</p>
+        <a class="conf-policy__tel" href="tel:+375447080101">+375 (44) 708 01 01</a>
+        <a class="conf-policy__tel" href="tel:+375447081100">+375 (44) 708 11 00</a>
+        <a class="conf-policy__tel" href="tel:+375447010808">+375 (44) 701 08 08</a>
+    </div>
+</div>

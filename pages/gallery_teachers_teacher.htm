@@ -1,0 +1,76 @@
+title = "Работы Виталия Шохана"
+url = "/gallery/teachers/:slug"
+layout = "default"
+meta_title = "Работы Виталия Шохана"
+meta_description = "Работы фотографа Виталия Шохана"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Работы Виталия Шохана"
+og_description = "Работы фотографа Виталия Шохана"
+og_image = "/teachers/shohan/gallery/0BHhE0SVMXY.jpg"
+
+[siteSearchInclude]
+==
+<?php
+use Spaced\Blenda\Models\Teacher;
+
+	function onStart() {
+		$this['teacher'] = Teacher::where('slug', '=', $this->param('slug'))->first();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ teacher.photo|media }}" alt="{{ teacher.banner_alt }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link" href="{{ 'gallery'|page }}">Галерея</a>
+		<a class="breadcrumbs__link" href="{{ 'gallery_teachers'|page }}">Работы преподавателей</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Работы преподавателей</a>
+	</div>
+	<h1 class="banner__title">Работы {{ teacher.name }}</h1>
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<div class="section container">
+	<div class="msnry">
+		{% for item in teacher.gallery %}
+			<div class="gallery-item">
+				<a href="{{ item.image|media }}" data-rel="lightcase:slider:slideshow">
+					{% if item.size == 1 %}
+						<figure class="gallery-item__img-wrapper small image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% elseif item.size == 2 %}
+						<figure class="gallery-item__img-wrapper middle image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% elseif item.size == 3 %}
+						<figure class="gallery-item__img-wrapper large image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% else %}
+						<figure class="gallery-item__img-wrapper middle image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% endif %}
+				</a>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="more-photos-block">
+		<a id="loadMore" class="more-photos-block__link" href="#">показать больше фото</a>
+	</div>
+</div>

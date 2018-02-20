@@ -1,0 +1,115 @@
+.header {
+	position: absolute;
+	top: 45px;
+	left: 0;
+	z-index: 2;
+	display: flex;
+	justify-content: center;
+	align-items: flex-end;
+	width: 100%;
+	&.fixed {
+		position: fixed;
+		top: 0;
+		z-index: 9;
+		padding: 15px 0;
+		background: #fbfbfb;
+		box-shadow: 0 1px 1px 0 rgba(9, 65 ,54 , 0.1);
+		.logo-link {
+			display: none;
+			&--fixed {
+				display: block;
+			}
+		}
+		.header-wrapper {
+			&__logo {
+				display: none;
+				&--dark {
+					display: block;
+				}
+			}
+		}
+		.nav-icon {
+			.nav-icon__line {
+				background: #4c4c4c;
+			}
+			.nav-icon__text {
+				color: #4c4c4c;
+			}
+		}
+		.nav {
+			.nav__nav-visible {
+				.nav__search {
+					&__icon {
+						@include grid-breakpoint(md) {
+							fill: #4c4c4c;
+							&:hover {
+								fill: $accent-color;
+							}
+						}
+					}
+				}
+				.nav-visible__item {
+					color: #4c4c4c;
+					&:hover {
+						color: $accent-color;
+					}
+				}
+			}
+		}
+	}
+}
+
+.header-wrapper {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	margin: 0;
+	padding: 0 15px;
+	@include grid-breakpoint(md) {
+		width: 960px;
+		padding: 0;
+	}
+	@include grid-breakpoint(lg) {
+		width: 1140px;
+	}
+	.logo-link {
+		display: block;
+		&--fixed {
+			display: none;
+		}
+	}
+	&__logo {
+		width: 130px;
+		height: auto;
+		@include grid-breakpoint(md) {
+			width: 234px;
+		}
+		&--dark {
+			display: none;
+			@include grid-breakpoint(md) {
+				width: 170px;
+			}
+		}
+	}
+	.overlay {
+		visibility: hidden;
+		display: none;
+		@include grid-breakpoint(md) {
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 2;
+			display: block;
+			width: 100%;
+			height: 100vh;
+			background: #000;
+			opacity: 0;
+			transition: opacity 0.3s;
+			&.opened {
+				visibility: visible;
+				opacity: 0.5;
+			}
+		}
+	}
+}

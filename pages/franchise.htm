@@ -1,0 +1,48 @@
+title = "Франшиза фотошколы Blenda"
+url = "/franchise"
+layout = "default"
+meta_title = "О фотошколе BLENDA Павла Бабарыкина"
+meta_description = "Лучшая фотошкола Беларуси: обучение фотографии под руководством профессиональных фотографов страны"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+og_image = "/zO-Uh0-6KhU.jpg"
+
+[siteSearchInclude]
+
+[PageBanner]
+
+[Franchise]
+emails[] = "m.pinchuk1995@gmail.com"
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Франшизы</a>
+	</div>
+	<h1 class="banner__title">Франшиза фотошколы «Blenda»</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_7">
+			<h3 class="franchise__title">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил</h3>
+			<p class="franchise__subtitle">Проснувшись однажды утром после беспокойного сна, Грегор Замза обнаружил, что он у себя в постели превратился в страшное насекомое. Лежа на панцирнотвердой спине, он видел, стоило ему приподнять голову, свой коричневый, выпуклый, разделенный дугообразными чешуйками живот, на верхушке</p>
+		</div>
+		{% component 'Franchise' %}
+	</div>
+</section>

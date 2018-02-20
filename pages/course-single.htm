@@ -1,0 +1,1138 @@
+title = "Основы фотографии для начинающих"
+url = "/courses/:slug"
+layout = "default"
+meta_title = "Обучение фотографии с нуля до профи"
+meta_description = "Основы фотографии для начинающих"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Обучение основам фотографии в крупнейшей фотостудии Минска"
+og_description = "Курсы фотографии для новичков от фотошколы BLENDA Павла Бабарыкина"
+og_image = "/banners/courses_slide.jpg"
+
+[siteSearchInclude]
+
+[genericForm zapisInlineForm]
+group = "Запись на курс"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+messages_success_title = "Your form was successfully submitted"
+messages_success_subtitle = "Your form was successfully submitted"
+mail_enabled = 1
+mail_subject = "Запись на курс"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+
+[genericForm stokePopupForm]
+group = "Запись на курс со скидкой"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+form_title = "Записаться на курс со скидкой"
+form_subtitle = "Оставьте заявку – и Вы получите подробную консультацию по программе обучения, расписанию и стоимости курса."
+form_btn_text = "записаться"
+messages_success_title = "Your form was successfully submitted"
+messages_success_subtitle = "Your form was successfully submitted"
+mail_enabled = 1
+mail_subject = "Запись на курс со скидкой"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+
+[genericForm freePopupForm]
+group = "Запись на пробное занятие"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+form_title = "Записаться на пробное занятие"
+form_subtitle = "Оставьте заявку – и Вы получите подробную консультацию по программе обучения, расписанию и стоимости курса."
+form_btn_text = "записаться"
+messages_success_title = "Your form was successfully submitted"
+messages_success_subtitle = "Your form was successfully submitted"
+mail_enabled = 1
+mail_subject = "Запись на пробное занятие"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_success = "$('[data-remodal-id=success]').remodal().open(); $(document).on('closing', '#zapis-free-form', getNameCta());"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+
+[genericForm zapisPackageForm]
+group = "Запись на курс по пакету"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+messages_success_title = "Your form was successfully submitted"
+messages_success_subtitle = "Your form was successfully submitted"
+mail_enabled = 1
+mail_subject = "Запись на курс по пакету"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+==
+<?php
+	use Spaced\Blenda\Models\Course;
+	use Spaced\Blenda\Models\Teacher;
+	use Spaced\Blenda\Models\CourseForms;
+
+	function onStart() {
+		$course = Course::where('slug', '=', $this->param('slug'))->first();
+		$this['course'] = $course;
+
+		$rel = $course->teachers;
+		$rels = [];
+
+		foreach($rel as $item) {
+		    foreach($item as $key => $value) {
+		        if ($key == 'teacher') {
+					$rels[] = $value;
+				}
+			}
+			unset($value);
+		}
+		unset($item);
+		
+		
+		$array = collect($rel)->sortBy('teacher')->toArray();
+		$this['teachers_descr'] = $array;
+		
+		$placeholders = implode(',',array_fill(0, count($rels), '?'));
+		$teachers = Teacher::whereIn('id', $rels)->orderByRaw("field(id,{$placeholders})", $rels)->get();
+
+		$this['teachers'] = $teachers;
+
+		$bannerForm = $course->banner_form;
+		$programForm = $course->program_form;
+		$ctaForm = $course->cta_form;
+		$inlineForm = $course->inline_form;
+
+		$bannerForms = CourseForms::where('id', $bannerForm)->get();
+		$programForms = CourseForms::where('id', $programForm)->get();
+		$ctaForms = CourseForms::where('id', $ctaForm)->get();
+		$inlineForms = CourseForms::where('id', $inlineForm)->get();
+		
+		$this['bannerForms'] = $bannerForms;
+		$this['programForms'] = $programForms;
+		$this['ctaForms'] = $ctaForms;
+		$this['inlineForms'] = $inlineForms;
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<!-- $programForm = $course->program_form;
+		$programForms = [];
+
+		foreach ($programForm as $item) {
+			foreach($item as $key => $value) {
+				$programForms[] = $value;
+			}
+		}
+		
+		$programForms = CourseForms::whereIn('id', $programForms)->get();
+		$this['programForms'] = $programForms; -->
+
+{% if course %}
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ course.banner|media }}" alt="{{ course.banner_alt }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link" href="{{ 'courses'|page }}">Курсы</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">{{ course.title }}</a>
+	</div>
+	<h1 class="banner__title">{{ course.title }}</h1>
+	{% if course.banner_btn_check %}
+		<a class="btn white item__btn" href="#" data-remodal-target="zapis-banner-{{ course.slug }}">
+			<span class="btn__text">{{ course.banner_btn_text }}</span>
+			<span class="btn__icon"></span>
+		</a>
+	{% endif %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">{{ course.about_title }}</h2>
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">{{ course.descr_short }}</h3>
+			<p class="course-descr">{{ course.descr_full }}</p>
+		</div>	
+	</div>
+</section>
+
+<section class="full-container bg-white">
+	<div class="container">
+		<div class="row">
+			<div class="col_5">
+				<h2 class="section__title">{{ course.teacher_title }}</h2>
+			</div>
+			<div class="col_7">
+				<h3 class="section__subtitle">{{ course.teacher_subtitle }}</h3>
+			</div>
+		</div>
+		<div class="row courses__teacher-slider__wrapper">
+			<div class="courses__teacher-slider-photo__wrapper">
+				<div class="swiper-container teacher-slider-photo">
+					<div class="swiper-wrapper">
+						{% for teacher in teachers %}
+							<div class="swiper-slide">
+								<figure class="teacher-slider-photo__img-wrapper image-wrapper">
+									<img class="img-wrapper__img" src="{{ teacher.photo_portrait|media }}" alt="{{ teacher.name }}">
+								</figure>
+							</div>
+						{% endfor %}
+					</div>
+					<!-- Add Arrows -->
+					{% for item in course.teachers %}
+						{% if loop.length > 1 %}
+							{% if loop.index == 1 %}
+						        <div class="teacher-photo-slider__nav-block">
+									<div class="teacher-photo-slider__swiper-button-prev swiper-button-prev">
+										<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+											<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+											<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+											<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+											<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+										</svg>
+									</div>
+									<div class="teacher-photo-slider__swiper-button-next swiper-button-next">
+										<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+											<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+											<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+											<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+											<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+										</svg>
+									</div>
+									<div class="teacher-photo-slider__swiper-pagination swiper-pagination"></div>
+								</div>
+							{% endif %}
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+			<div class="courses__teacher-slider-descr__wrapper">
+				<div class="swiper-container teacher-slider-descr">
+					<div class="swiper-wrapper">
+						{% for teacher in teachers %}
+							<div class="swiper-slide">
+								<div class="teacher-slider-descr__descr-block">
+									<h4 class="descr-block__name">{{ teacher.name }}</h4>
+									{% for item in course.teachers %}
+										{% if loop.parent.loop.index == loop.index %}
+											<p class="descr-block__descr">{{ item.descr }}</p>
+										{% endif %}
+									{% endfor %}
+									<a class="descr-block__link link" href="../../teachers/{{ teacher.slug }}">
+										<span class="link__text">Подробнее о преподавателе</span>
+										<span class="icon-block">
+											<svg class="link__arrow" x="0px" y="0px" viewBox="0 0 496.5 298.3">
+												<path d="M496.5,149.1c0-0.7,0-1.2-0.1-1.8c-0.4-3.4-1.7-6.5-4.1-9L358.5,4.5c-2.9-2.9-6.8-4.5-10.9-4.5h0c-4.1,0-8,1.6-10.8,4.5  c-2.9,2.9-4.5,6.8-4.5,10.9c0,4.1,1.6,8,4.5,10.9l107.6,107.6H17.3c-9.7,0-17.3,6.7-17.3,15.3c0,8.6,7.6,15.4,17.3,15.4h427.1  L336.8,272c-2.9,2.9-4.5,6.8-4.5,10.9c0,4.1,1.6,8,4.5,10.8c2.9,2.9,6.8,4.5,10.9,4.5c4.1,0,7.9-1.6,10.8-4.5l134-134  c2.4-2.5,3.6-5.6,4-9C496.5,150.2,496.5,149.7,496.5,149.1z"/>
+											</svg>
+										</span>
+									</a>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+					<!-- Add Arrows -->
+					{% for item in course.teachers %}
+						{% if loop.length > 1 %}
+					        <div class="teacher-descr-slider__nav-block">
+					        	<div class="teacher-descr-slider__swiper-button-prev">предыдущий преподаватель</div>
+					        	<div class="teacher-descr-slider__swiper-button-next">следующий преподаватель</div>
+					        	<div class="teacher-descr-slider__swiper-pagination swiper-pagination"></div>
+					        </div>
+					    {% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+        	<h2 class="section__title">{{ course.program_title }}</h2>	
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">{{ course.program_subtitle }}</h3>
+		</div>	
+	</div>
+	<div class="row">
+		<div class="course-programm__descr">
+			<p class="descr__text">{{ course.program_descr }}</p>
+		</div>
+		<div class="course-programm__price-block">
+			<h5 class="price-block__title">стоимость</h5>
+			{% if course.stoke_check %}
+				<span class="price-block__stoke-price">{{ course.price_stoke }} руб.</span>
+				<span class="price-block__old-price">{{ course.price_default }} руб.</span>
+			{% else %}
+				<span class="price-block__stoke-price">{{ course.price_default }} руб.</span>
+			{% endif %}
+			{% if course.date_type == 1 %}
+				<h5 class="price-block__title">дата начала занятий</h5>
+				<span class="price-block__date">{{ course.date_start|date('d.m.Y') }}</span>
+			{% elseif course.date_type == 2 %}
+				<h5 class="price-block__title">дата окончания акции</h5>
+				<span class="price-block__date">{{ course.stoke_end|date('d.m.Y') }}</span>
+			{% endif %}
+			{% if course.seats_left != null %}
+				<h5 class="price-block__title">осталось мест</h5>
+				<span class="price-block__date">{{ course.seats_left }}</span>
+			{% endif %}
+			<h6 class="price-block__stoke-title">Информация по акционным условиям</h6>
+			<p class="price-block__stoke-text">Оплатив курс по акции, вы можете прийти на обучение хоть через месяц, хоть через год. Мы гарантируем, что стоимость курса для вас останется неизменной.</p>
+			{% if course.program_form_published %}
+				<button class="btn price-block__btn" data-remodal-target="zapis-stoke-{{ course.slug }}">
+					<span class="btn__text">записаться со скидкой</span>
+					<span class="btn__icon"></span>
+				</button>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{% if course.lessons %}
+<section class="section container" style="position: relative;">
+	<div class="row">
+		<div class="swiper-container course-descr-photo-slider">
+			<div class="swiper-wrapper">
+				{% for lesson in course.lessons %}
+					<div class="swiper-slide">
+						<figure class="course-descr-slider__img-wrapper image-wrapper">
+							<img class="img-wrapper__img" src="{{ lesson.lesson_image|media }}" alt="{{ lesson.lesson_title }}">
+						</figure>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="course-descr-photo-slider__nav-block">
+				<div class="course-descr-photo-slider__swiper-button-prev swiper-button-prev">
+					<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+						<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+						<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+						<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+					</svg>
+				</div>
+				<div class="course-descr-photo-slider__swiper-button-next swiper-button-next">
+					<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+						<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+						<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+						<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+					</svg>
+				</div>
+				<div class="course-descr-photo-slider__swiper-pagination swiper-pagination"></div>
+			</div>
+		</div>
+		<div class="swiper-container course-descr-slider">
+			<div class="swiper-wrapper">
+				{% for lesson in course.lessons %}
+					<div class="swiper-slide">
+						<div class="course-descr-slider__descr-block">
+							<h4 class="descr-block__title">Занятие {{ loop.index }}</h4>
+							<span class="descr-block__subtitle">тема занятия</span>
+							<h3 class="descr-block__theme">{{ lesson.lesson_title }}</h3>
+							{{ lesson.descr|raw }}
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="course-descr-slider__nav-block">
+				<div class="course-descr-slider__swiper-button-prev swiper-button-prev">
+					<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+						<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+						<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+						<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+					</svg>
+				</div>
+				<div class="course-descr-slider__swiper-pagination swiper-pagination"></div>
+				<div class="course-descr-slider__swiper-button-next swiper-button-next">
+					<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+						<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+						<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+						<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+					</svg>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+{% endif %}
+
+
+{% if course.price_published %}
+	<section class="section">
+	    <div class="container">
+	        <div class="row">
+	            <div class="col_5">
+                	<h2 class="section__title">{{ course.price_title }}</h2>
+	            </div>
+	            <div class="col_7">
+	                <h3 class="section__subtitle">{{ course.price_subtitle }}</h3>
+	            </div>	
+	        </div>
+	    </div>
+	    {% for package in course.packages %}
+
+		    <div class="table-price-body-wrapper desktop">
+		        <div class="table-price-body">
+		            <table class="table">
+		                <thead class="thead">
+		                    <tr>
+		                        <th></th>
+		                        {% for item in package.packages %}
+		                        	<th {% if item.package_td_check %}class="hit"{% endif %}>{{ item.package_title }}</th>
+		                    	{% endfor %}
+		                    </tr>
+		                </thead>
+		                <tbody class="tbody">
+		                	{% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_1_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_1_published %}
+	                        				<td>{{ item.package_row_1 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_1_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_1_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_1_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_2_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_2_published %}
+	                        				<td>{{ item.package_row_2 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_2_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_2_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_2_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_3_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_3_published %}
+	                        				<td>{{ item.package_row_3 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_3_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_3_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_3_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_4_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_4_published %}
+	                        				<td>{{ item.package_row_4 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_4_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_4_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_4_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_5_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_5_published %}
+	                        				<td>{{ item.package_row_5 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_5_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_5_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_5_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_6_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_6_published %}
+	                        				<td>{{ item.package_row_6 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_6_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_6_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_6_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   	{% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_7_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_7_published %}
+	                        				<td>{{ item.package_row_7 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_7_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_7_state %}
+			                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_7_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_8_published %}
+					                    <tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                   		{% for item in package.packages %}
+		                    		{% if loop.index == 1 %}
+		                    			{% if item.package_row_8_published %}
+	                        				<td>{{ item.package_row_8 }}</td>
+	                        			{% endif %}
+		                        	{% endif %}
+		                        {% endfor %}
+		                        {% for item in package.packages %}
+		                        	{% if item.package_row_8_published %}
+			                        	<td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        		{% if item.package_row_8_state != null %}
+			                            		<small>{{ item.package_row_8_state }}</small>
+			                        		{% else %}
+			                        			-
+			                        		{% endif %}
+			                        	</td>
+		                        	{% endif %}
+		                        {% endfor %}
+			                {% for item in package.packages %}
+			                	{% if loop.index == 1 %}
+			                		{% if item.package_row_8_published %}
+					                    </tr>
+				                   	{% endif %}
+			                   	{% endif %}
+		                   	{% endfor %}
+		                    <tr>
+		                        <td>срок обучения</td>
+		                        {% for item in package.packages %}
+			                        <td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        	{% if item.package_term_row_1 != null %}
+			                            	<p class="text--huge">{{ item.package_term_row_1 }}</p>
+			                            {% endif %}
+			                            {% if item.package_term_row_2 != null %}
+			                            	<p class="text--middle">{{ item.package_term_row_2 }}</p>
+			                            {% endif %}
+			                            {% if item.package_term_row_3 != null %}
+			                            	<p class="text--small">{{ item.package_term_row_3 }}</p>
+			                            {% endif %}
+			                        </td>
+		                        {% endfor %}
+		                    </tr>
+		                    <tr>
+		                        <td>стоимость</td>
+		                        {% for item in package.packages %}
+			                        <td {% if item.package_td_check %}class="hit"{% endif %}>
+			                        	{% if item.package_price_stoke != null %}
+			                            	<p class="stoke-price">{{ item.package_price_stoke }} <small>руб.</small></p>
+			                            {% endif %}
+			                            {% if item.package_price_stoke_check %}
+			                            	{% if item.package_price_default %}
+			                            		<p class="default-price stoke">{{ item.package_price_default }} <small>руб.</small></p>
+			                            	{% endif %}
+										{% else %}
+											{% if item.package_price_default %}
+			                            		<p class="default-price">{{ item.package_price_default }} <small>руб.</small></p>
+			                            	{% endif %}
+										{% endif %}
+			                            {% if item.package_price_economy != null %}
+			                            	<p class="economy">экономия: {{ item.package_price_economy }} руб.</p>
+			                            {% endif %}
+			                            {% if item.package_price_term != null %}
+			                            	<p class="date">{{ item.package_price_term }}</p>
+			                        	{% endif %}
+			                        </td>
+		                        {% endfor %}
+		                    </tr>
+		                    <tr>
+		                        <td></td>
+		                        {% for item in package.packages %}
+			                        <td {% if item.package_td_check %}class="hit"{% endif %}>
+			                            <button class="btn table__btn" data-remodal-target="zapis-{{ course.slug }}-{{ item.package_slug }}">
+			                                <span class="btn__text">записаться</span>
+											<span class="btn__icon"></span>
+			                            </button>
+			                        </td>
+		                        {% endfor %}
+		                    </tr>
+		                </tbody>
+		            </table>
+		        </div>
+		    </div>
+
+		    <div class="table-price-wrapper">
+		    	<div class="slider-tariff-table__nav-block">
+			    	<div class="slider-tariff-table__swiper-pagination"></div>
+					<div class="slider-tariff-table__swiper-button-prev swiper-button-prev">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="slider-tariff-table__swiper-button-next swiper-button-next">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+				</div>
+		    	<div class="package-items-block">
+					<table class="package-items__table">
+		    			<tbody>
+	    					{% for item in package.packages %}
+								{% if loop.index == 1 %}
+									{% if item.package_row_1_published %}
+										<tr>
+											<td>{{ item.package_row_1 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_2_published %}
+										<tr>
+											<td>{{ item.package_row_2 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_3_published %}
+										<tr>
+											<td>{{ item.package_row_3 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_4_published %}
+										<tr>
+											<td>{{ item.package_row_4 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_5_published %}
+										<tr>
+											<td>{{ item.package_row_5 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_6_published %}
+										<tr>
+											<td>{{ item.package_row_6 }}</td>
+										</tr>
+									{% endif %}
+									{% if item.package_row_7_published %}
+										<tr>
+											<td>{{ item.package_row_7 }}</td>
+										</tr>
+									{% endif %}
+								{% endif %}
+	    					{% endfor %}
+		    				<tr class="term">
+		    					<td>срок обучения</td>
+		    				</tr>
+		    				<tr class="cost">
+		    					<td>стоимость</td>
+		    				</tr>
+		    			</tbody>
+		    		</table>
+		    	</div>
+				<div class="package-tariff-block">
+		    		<div class="swiper-container slider-tariff-table">
+		    			<div class="swiper-wrapper">
+		    				{% for item in package.packages %}
+			    				<div class="swiper-slide">
+						    		<table class="package-tariff__table {% if item.package_td_check %}hit{% endif %}">
+						    			<tbody>
+						    				{% if item.package_row_1_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_1_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_2_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_2_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_3_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_3_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_4_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_4_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_5_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_5_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_6_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_6_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_7_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_7_state %}
+						                            		<img src="{{ 'assets/dist/img/icons/check.svg'|theme }}" alt="Check">
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				{% if item.package_row_8_published %}
+							    				<tr>
+							    					<td>
+							    						{% if item.package_row_8_state != null %}
+						                            		<small>{{ item.package_row_8_state }}</small> 
+						                        		{% else %}
+						                        			-
+						                        		{% endif %}
+							    					</td>
+							    				</tr>
+						    				{% endif %}
+						    				<tr class="term">
+						    					<td>
+						    						{% if item.package_term_row_1 != null %}
+						                            	<p class="text--huge">{{ item.package_term_row_1 }}</p>
+						                            {% endif %}
+						                            {% if item.package_term_row_2 != null %}
+						                            	<p class="text--middle">{{ item.package_term_row_2 }}</p>
+						                            {% endif %}
+						                            {% if item.package_term_row_3 != null %}
+						                            	<p class="text--small">{{ item.package_term_row_3 }}</p>
+						                            {% endif %}
+					                          	</td>
+						    				</tr>
+						    				<tr class="cost">
+						    					<td>
+						    						{% if item.package_price_stoke != null %}
+						                            	<p class="stoke-price">{{ item.package_price_stoke }} <small>руб.</small></p>
+						                            {% endif %}
+						                            {% if item.package_price_stoke_check %}
+						                            	{% if item.package_price_default %}
+						                            		<p class="default-price stoke">{{ item.package_price_default }} <small>руб.</small></p>
+						                            	{% endif %}
+													{% else %}
+														{% if item.package_price_default %}
+						                            		<p class="default-price">{{ item.package_price_default }} <small>руб.</small></p>
+						                            	{% endif %}
+													{% endif %}
+						                            {% if item.package_price_economy != null %}
+						                            	<p class="economy">экономия: {{ item.package_price_economy }} руб.</p>
+						                            {% endif %}
+						                            {% if item.package_price_term != null %}
+						                            	<p class="date">{{ item.package_price_term }}</p>
+						                        	{% endif %}
+						                        </td>
+						    				</tr>
+						    				<tr>
+						    					<td>
+						    						<button class="btn table__btn" data-remodal-target="zapis-{{ course.slug }}-{{ item.package_slug }}">
+						                                <span class="btn__text">записаться</span>
+														<span class="btn__icon"></span>
+						                            </button>
+						    					</td>
+						    				</tr>
+						    			</tbody>
+						    		</table>
+								</div>
+							{% endfor %}
+		    			</div>
+		    		</div>
+		    	</div>
+		    </div>
+
+	    {% endfor %}
+	</section>
+{% endif %}
+
+	{% if course.cta_block_check == 1 %}
+		<section class="cta-block">
+			<figure class="cta-block__img-wrapper image-wrapper">
+				<img class="img-wrapper__img" src="{{ 'assets/dist/img/course__cta-bg.jpg'|theme }}" alt="cta">
+			</figure>
+			<div class="container">
+				<div class="cta-block__item">
+					<h3 class="item__title">{{ course.cta_block_title }}</h3>
+					<p class="item__descr">{{ course.cta_block_subtitle }}</p>
+					{% if course.cta_form_published %}
+						<button class="btn item__btn white" data-remodal-target="zapis-cta-{{ course.slug }}">
+							<span class="btn__text">{{ course.cta_block_btn_text }}</span>
+							<span class="btn__icon"></span>
+						</button>
+					{% endif %}
+				</div>
+			</div>	
+		</section>
+	{% endif %}
+
+	<section class="section container">
+		<div class="row">
+			<div class="col_5">
+            	<h2 class="section__title">{{ course.gallery_title }}</h2>	
+			</div>
+			<div class="col_7">
+				<h3 class="section__subtitle">{{ course.gallery_subtitle }}</h3>
+			</div>
+		</div>
+		<div class="msnry">
+			{% if course.gallery_type == 1 %}
+				{% for item in course.gallery_students %}
+					<div class="gallery-item">
+						<a href="{{ item.image|media }}" data-rel="lightcase:slider:slideshow">
+							{% if item.size == 1 %}
+								<figure class="gallery-item__img-wrapper small image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% elseif item.size == 2 %}
+								<figure class="gallery-item__img-wrapper middle image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% elseif item.size == 3 %}
+								<figure class="gallery-item__img-wrapper large image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% else %}
+								<figure class="gallery-item__img-wrapper middle image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% endif %}
+						</a>
+					</div>
+				{% endfor %}
+			{% elseif course.gallery_type == 2 %}
+				{% for item in course.gallery_teachers %}
+					<div class="gallery-item">
+						<a href="{{ item.image|media }}" data-rel="lightcase:slider:slideshow">
+							{% if item.size == 1 %}
+								<figure class="gallery-item__img-wrapper small image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% elseif item.size == 2 %}
+								<figure class="gallery-item__img-wrapper middle image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% elseif item.size == 3 %}
+								<figure class="gallery-item__img-wrapper large image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% else %}
+								<figure class="gallery-item__img-wrapper middle image-wrapper">
+									<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							{% endif %}
+						</a>
+					</div>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="more-photos-block">
+			<a id="loadMore" class="more-photos-block__link" href="#">показать больше фото</a>
+		</div>
+	</section>
+
+	{% partial 'forms/courses/inline-form' %}
+{% endif %}
+
+
+
+<!-- --------------------------------------------/* Формы записи */---------------------------------- -->
+
+{% partial 'forms/courses/banner-form.htm' %}
+
+{% partial 'forms/courses/program-form.htm' %}
+
+{% partial 'forms/courses/cta-form.htm' %}
+
+{% partial 'forms/courses/package-form' %}
+
+{% partial 'forms/courses/timer-form' %}
+
+{% put scripts %}
+	<script>
+		/*======================== Swiper init (tariff table) ========================*/
+		sliderPriceOptions = {
+			nextButton: '.slider-tariff-table__swiper-button-next',
+		    prevButton: '.slider-tariff-table__swiper-button-prev',
+		    pagination: '.slider-tariff-table__swiper-pagination',
+		    paginationClickable: true,
+		    paginationBulletRender: function (swiper, index, className) {
+				var tabsName = [
+					{% for package in course.packages %}
+						{% for item in package.packages %}
+							{% if loop.last == false %}
+								'{{ item.package_title }}',
+							{% elseif loop.last %}
+								'{{ item.package_title }}'
+							{% endif %}
+						{% endfor %}
+					{% endfor %}
+				];
+				if ( index === (tabsName.length - 1) ) {
+					return  '<span class="' +className + '">'
+							+ tabsName[index] + '</span>'
+							+ '<div class="active-mark "></div>';
+				}
+				return '<span class="' +className + '">' + tabsName[index] + '</span>';
+			}
+		}
+		if (window.matchMedia( "(max-width: 768px)" ).matches) {
+			var tariffTableSlider = new Swiper('.slider-tariff-table', sliderPriceOptions);
+		}
+
+		window.onresize = function() {
+			if(!window.matchMedia( "(max-width: 768px)" ).matches && tariffTableSlider) {
+				tariffTableSlider.destroy(deleteInstance, cleanupStyles);
+			} else {
+				var tariffTableSlider = new Swiper('.slider-tariff-table', sliderPriceOptions);
+			}
+		}
+
+		function getNameStoke() {
+			var name = $('#zapis-stoke-form').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+			console.log('name:' + localStorage.getItem('name'));
+		};
+		function getNameCta() {
+			var name = $('#zapis-cta-form').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+		function getNameInline() {
+			var name = $('#zapis-inline-form').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+		function getNameBanner() {
+			var name = $('#zapis-banner-form').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+
+		{% for package in course.packages %}
+			{% for item in package.packages %}
+				$(document).on('opening', '[data-remodal-id=zapis-package-gift-{{ item.package_slug }}]', function () {
+					console.log('opening');
+					var name = localStorage.getItem('name');
+					$('[data-remodal-id=zapis-package-gift-{{ item.package_slug }}]').children('form').find('input[name="name"]').val(name);
+				});
+			{% endfor %}
+		{% endfor %}
+
+		{% if course.timer_form != null %}
+		$(document).ready(function() {
+			if (!sessionStorage.getItem('{{ course.slug }}')) {
+				setTimeout(function() {
+					$('[data-remodal-id=gift-large-{{ course.slug }}]').remodal().open();
+					sessionStorage.setItem('{{ course.slug }}', true);
+				}, 60000);
+			}
+		});
+		{% endif %}
+	</script>
+{% endput %}

@@ -1,0 +1,215 @@
+// Navigation styles
+.nav {
+	position: fixed;
+	top: 0;
+	right: 0;
+	z-index: 3;
+	overflow: auto;
+	width: 100%;
+	height: 100vh;
+	padding: 0 0 0 45px;
+	background: #fff;
+	transform: translate3d(100%, 0, 0);
+	transition: transform 0.5s;
+	&.opened {
+		transform: translate3d(0, 0, 0);
+	}
+	@include grid-breakpoint(md) {
+		position: static;
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-end;
+		align-items: center;
+		height: auto;
+		overflow: initial;
+		background: transparent;
+		transform: translate3d(0, 0, 0);
+	}
+	.nav__nav-visible {
+		margin-top: 25%;
+		@include grid-breakpoint(md) {
+			margin-top: 0;
+		}
+		.nav__nav-visible__list {
+			display: flex;
+			flex-direction: column;
+			margin: 0;
+			padding: 0;
+			list-style: none;
+			@include grid-breakpoint(md) {
+				flex-direction: row;
+				align-items: center;
+			}
+		}
+		.nav__search {
+			display: block;
+			width: 50%;
+			margin: 0 0 10px 0;
+			@include grid-breakpoint(md) {
+				display: flex;
+				align-items: center;
+				width: auto;
+				margin: 0 50px 0 12px;
+				order: 2;
+			}
+			&:before {
+				content: 'Поиск';
+				margin: 0 14px 0 0;
+				font-family: 'Lato', sans-serif;
+				font-weight: 700;
+				font-size: 1rem;
+				line-height: 2;
+				color: $accent-color;
+				@include grid-breakpoint(md) {
+					content: '';
+					margin: 0;
+				}
+			}
+			&__icon {
+				width: 13px;
+				height: 13px;
+				fill: $accent-color;
+				@include grid-breakpoint(md) {
+					fill: #fff;
+					cursor: pointer;
+					transition: fill 0.3s;
+					&:hover {
+						fill: $accent-color;
+					}
+				}
+			}
+		}
+		.nav-visible__item {
+			padding: 15px 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 1rem;
+			color: #4c4c4c;
+			line-height: 2;
+			@include grid-breakpoint(md) {
+				margin: 0 19px;
+				font-size: 0.875rem;
+				line-height: (32/14);
+				letter-spacing: 0.05em;
+				color: #fff;
+				cursor: pointer;
+				transition: color 0.3s;
+				&:hover {
+					color: $accent-color;
+				}
+			}
+			&:active {
+				color: $accent-color;
+			}
+			&.dropdown-link {
+				@include grid-breakpoint(md) {
+					&:hover + .navigation-dropdown {
+						display: block;
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+.nav__nav-hidden {
+	display: flex;
+	flex-direction: column;
+	@include grid-breakpoint(md) {
+		display: none;
+	}
+	&.desktop {
+		display: none;
+		@include grid-breakpoint(md) {
+			position: fixed;
+			top: 0;
+			right: 0;
+			z-index: 3;
+			display: flex;
+			justify-content: center;
+			width: 486px;
+			height: 100vh;
+			padding: 0 0 0 75px;
+			background: #fff;
+			transform: translate3d(200%, 0, 0);
+			transition: transform 0.5s;
+			&.opened {
+				transform: translate3d(0, 0, 0);
+			}
+		}
+		.nav-hidden__item {
+			@include grid-breakpoint(md) {
+				margin: 7px 0;
+				font-size: 1.125rem;
+				line-height: (32/18);
+				cursor: pointer;
+				transition: color 0.3s;
+				&:hover {
+					color: $accent-color;
+				}
+			}
+			&:active {
+				color: $accent-color;
+			}
+		}
+		.social-block {
+			&__title {
+				@include grid-breakpoint(md) {
+					margin: 72px 0 0 0;
+					font-size: 1rem;
+					line-height: (22/16);
+				}
+			}
+			&__link {
+				@include grid-breakpoint(md) {
+					cursor: pointer;
+					transition: color 0.3s;
+					&:hover {
+						color: $accent-color;
+					}
+				}
+			}
+		}
+	}
+	.nav-hidden__item {
+		font-family: 'Lato', sans-serif;
+		font-weight: 700;
+		font-size: 1rem;
+		color: #4c4c4c;
+		line-height: 2;
+	}
+	.social-block {
+		&__title {
+			margin: 22px 0 0 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 0.75rem;
+			color: #4c4c4c;
+			line-height: (22/12);
+		}
+		&__link {
+			font-family: 'Lato', sans-serif;
+			font-size: 1rem;
+			color: #4c4c4c;
+			line-height: (22/16);
+			&:active {
+				color: $accent-color;
+			}
+			&:after {
+				content: '//';
+				margin: 0 0 0 4px;
+				font-family: 'Lato', sans-serif;
+				font-size: 1rem;
+				color: #4c4c4c;
+				line-height: (22/16);
+			}
+			&:last-child {
+				&:after {
+					content: '';
+				}
+			}
+		}
+	}
+}

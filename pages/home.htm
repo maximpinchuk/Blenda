@@ -1,0 +1,387 @@
+title = "Главная"
+url = "/"
+layout = "default"
+meta_title = "Blenda.by – ведущая школа фотографии в Минске и Беларуси"
+meta_description = "Фотошкола БЛЕНДА – обучение фотографии онлайн и в крупнейшей фотостудии Минска: минимум теории, максимум съемок и немного ретуши"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Фотошкола BLENDA – обучение фотографии для новичков и профессионалов"
+og_description = "Курсы фотографии в Минске от фотошколы BLENDA Павла Бабарыкина позволят вам выйти на новый уровень фотомастерства."
+og_image = "/banners/banner_1.jpg"
+
+[siteSearchInclude]
+
+[genericForm bannerPopupForm]
+group = "Запись на курс со скидкой"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+form_title = "Записаться на курс со скидкой"
+form_subtitle = "Оставьте заявку – и Вы получите подробную консультацию по программе обучения, расписанию и стоимости курса."
+form_btn_text = "записаться"
+messages_success_title = "Your form was successfully submitted"
+messages_success_subtitle = "Your form was successfully submitted"
+mail_enabled = 1
+mail_subject = "Запись на курс со скидкой"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+==
+<?php
+	use Spaced\Blenda\Models\HomepageBanner;
+	use Spaced\Blenda\Models\ReviewsForm;
+	use Indikator\Content\Models\News;
+	use Spaced\Blenda\Models\CourseForms;
+
+	function onStart() {
+		$banners = HomepageBanner::where('btn_scenario', '=', '2')->get();
+		$this['banners'] = HomepageBanner::orderBy('order', 'asc')->get();
+		$this['reviews'] = ReviewsForm::where('homepage_published', '=', true)->get();
+		$this['news'] = News::orderBy('published_at', 'desc')->take(3)->get();
+
+		$rels = [];
+		foreach($banners as $item) {
+			$rels[] = $item->btn_popup;
+		};
+
+		$bannerForm = $rels;
+		$bannerForms = [];
+		foreach ($bannerForm as $item) {
+			$bannerForms[] = CourseForms::where('id', $item)->first();
+		};
+		$this['bannerForms'] = $bannerForms;
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<div class="banner homepage">
+	<div class="swiper-container banner-slider">
+		<div class="swiper-wrapper">
+			{% for banner in banners %}
+				<div class="swiper-slide">
+					<figure class="slider__img-wrapper image-wrapper">
+						<img class="slider__img-wrapper__img" src="{{ banner.image|media }}" alt="{{ banner.banner_img.title }}">
+					</figure>
+					<h2 class="banner__title">{{ banner.title }}</h2>
+					{% if banner.btn_scenario == 1 %}
+					<a class="btn banner__link white" href="{{ banner.btn_link }}">
+						<span class="btn__text">{{ banner.btn_text }}</span>
+						<span class="btn__icon"></span>
+					</a>
+					{% elseif banner.btn_scenario == 2 %}
+						{% for item in bannerForms %}
+							{% if banner.btn_popup == item.id %}
+								<button class="btn banner__link white" data-remodal-target="banner-{{ item.id }}">
+									<span class="btn__text">{{ banner.btn_text }}</span>
+									<span class="btn__icon"></span>
+								</button>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</div>
+			{% endfor %}
+		</div>
+		<div class="swiper__nav-block">
+			<div class="banner__swiper-button-prev swiper-button-prev">
+				<svg class="swiper-button-prev__icon swiper-button-prev__icon--light" x="0px" y="0px" viewBox="0 0 16.7 10">
+					<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+					<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+					<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+					<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+				</svg>
+			</div>
+			<div class="banner__swiper-pagination swiper-pagination"></div>
+			<div class="banner__swiper-button-next swiper-button-next">
+				<svg class="swiper-button-next__icon swiper-button-next__icon--light" x="0px" y="0px" viewBox="0 0 16.7 10">
+					<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+					<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+					<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+					<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+				</svg>
+			</div>
+		</div>
+	</div>
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</div>
+
+<section id="about" class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">О фотошколе</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Фотошкола BLENDA – это творческое пространство, в котором с утра до вечера идут обучающие занятия и профессиональные фотосъемки. На наших занятиях вы получите только самые актуальные знания и максимум практики под руководством самых лучших фотографов Беларуси.</h3>
+			<p class="about-block__text">Обучение проходит по авторским программам и методикам, направленным на 100% усвоение материала. Вам не придется ничего записывать или запоминать: все занятия сопровождаются наглядными презентациями. Технические моменты мы сразу отрабатываем на практике в студии с качественным оборудованием и профессиональными моделями, а также закрепляем полученные знания домашними заданиями. Только у нас вы получите реальные навыки и инструменты, чтобы профессионально развиваться в сфере фотографии.</p>
+			<a class="about-block__link link" href="{{ 'about'|page }}">
+				<span class="link__text">Подробнее о нас</span>
+				<span class="icon-block">
+					<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__dark.svg'|theme }}" alt="icon">
+				</span>
+			</a>
+		</div>	
+	</div>
+</section>
+
+<section class="div container">
+	<div class="advantages-block">
+		<figure class="advantages-block__img-wrapper image-wrapper" data-bottom-top="transform: translateY(0px);" data-top-bottom="transform: translateY(100px);">
+			<img class="img-wrapper__img" src="{{ 'assets/dist/img/home_advanteges.jpg'|theme }}" alt="Blog">
+		</figure>
+		<div class="advantages-block__item" data-bottom-top="transform: translateY(0px);" data-top-bottom="transform: translateY(230px);">
+			<h5 class="item__title" data-bottom-top="transform: rotate(-90deg) translateX(-80%);" data-center="transform: rotate(-90deg) translateX(-110%);">интересные факты</h5>
+			<div>
+				<p class="item__subtitle">10 лет</p>
+				<p class="item__descr">возраст самого молодого нашего ученика</p>
+				<p class="item__subtitle">82 года</p>
+				<p class="item__descr">возраст самого взрослого нашего ученика</p>
+				<p class="item__subtitle">все профессии</p>
+				<p class="item__descr">к нам приходят учиться из разных профессий: стоматологи, журналисты, маркетологи, учителя, строители и мн. др.</p>
+			</div>
+		</div>
+		<div class="advantages-block__item" data-bottom-top="transform: translateY(100px);" data-top-bottom="transform: translateY(200px);">
+			<h5 class="item__title" data-bottom-top="transform: rotate(-90deg) translateX(-60%);" data-center="transform: rotate(-90deg) translateX(-120%);">результаты</h5>
+			<div data-bottom-top="transform: translateY(0px);" data-center="transform: translateY(0px);">
+				<p class="item__subtitle">43%</p>
+				<p class="item__descr">студентов получают заказы на фотосессии и окупают стоимость обучения уже во время занятий</p>
+				<p class="item__subtitle">20%</p>
+				<p class="item__descr">студентов получают заказы в течение 2-х месяцев после окончания фотошколы</p>
+			</div>
+		</div>
+		<div class="advantages-block__item" data-bottom-top="transform: translateY(0px);" data-top-bottom="transform: translateY(250px);">
+			<h5 class="item__title" data-bottom-top="transform: rotate(-90deg) translateX(-50%);" data-top-bottom="transform: rotate(-90deg) translateX(-120%);">масштабность</h5>
+			<div data-bottom-top="transform: translateY(-50px);" data-center="transform: translateY(0);">
+				<p class="item__subtitle">130 человек</p>
+				<p class="item__descr">сейчас проходят обучение в студии</p>
+				<p class="item__subtitle">79 человек</p>
+				<p class="item__descr">человек обучаются фотографии онлайн каждую неделю</p>
+				<p class="item__subtitle">12 направлений</p>
+				<p class="item__descr">обучения: от основ фотографии до уровня профи</p>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section">
+	<div class="video-block">
+		<div class="video-block__play-icon"></div>
+		<div class="video-block__bg"></div>
+		<iframe id="video" src="https://www.youtube.com/embed/videoseries?list=PLJJ6y-ag9R6GIoPlpR1tqCu_leyD4APk8" allowfullscreen></iframe>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Наши курсы</h2>
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Мы предлагаем 12 различных программ обучения фотографии как для начинающих фотолюбителей, так и для профессиональных фотографов.</h3>
+		</div>
+	</div>
+	<div class="courses-block">
+		<div class="course-card" data-bottom-top="transform: translateY(0px);" data-top-bottom="transform: translateY(150);">
+			<h5 class="course-card__title" data-bottom-top="transform: rotate(-90deg) translateX(-80%);" data-top-bottom="transform: rotate(-90deg) translateX(-100%);">основы фотографии</h5>
+			<a class="course-card__link" href="courses/osnovy-fotografii-dlya-nachinayushih" data-bottom-top="transform: translateY(40px);" data-top-bottom="transform: translateY(0);">
+				<figure class="course-card__img-wrapper image-wrapper">
+					<img class="img-wrapper__img" src="{{ 'assets/dist/img/amatuer.jpg'|theme }}" alt="">
+					<p class="course-card__descr">Этот курс разработан специально для новичков, которые хотели бы поглубже разобраться в творческих и технических тонкостях фотографии. Курс имеет различные варианты по стоимости, наполнению и расписанию занятий.</p>
+					<span class="course-card__descr-link link">
+						<span class="link__text">Перейти к курсу</span>
+						<span class="icon-block">
+							<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+						</span>
+					</span>
+				</figure>
+			</a>
+		</div>
+		<div class="course-card" data-bottom-top="transform: translateY(130px);" data-top-bottom="transform: translateY(350px);">
+			<h5 class="course-card__title" data-bottom-top="transform: rotate(-90deg) translateX(-80%);" data-top-bottom="transform: rotate(-90deg) translateX(-100%);">pro-фотография</h5>
+			<a class="course-card__link" href="http://www.blenda.by/courses/pro-fotografiya/" data-bottom-top="transform: translateY(-50px);" data-center="transform: translateY(0);">
+				<figure class="course-card__img-wrapper image-wrapper">
+					<img class="img-wrapper__img" src="{{ 'assets/dist/img/PRO_1.jpg'|theme }}" alt="">
+					<p class="course-card__descr">Этот творческий фотокурс создан для вас, если вы любите фотографировать для души и при этом уже неплохо владеете ручными настройками фотоаппарата, но хотите прокачать  себя на 100%, используя массу различных приемов для осуществления своих фотоидей.</p>
+					<span class="course-card__descr-link link">
+						<span class="link__text">Перейти к курсу</span>
+						<span class="icon-block">
+							<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+						</span>
+					</span>
+				</figure>
+			</a>
+		</div>
+		<div class="course-card" data-bottom-top="transform: translateY(80px);" data-top-bottom="transform: translateY(150px);">
+			<h5 class="course-card__title" data-bottom-top="transform: rotate(-90deg) translateX(-80%);" data-top-bottom="transform: rotate(-90deg) translateX(-100%);">коммерческая фотография</h5>
+			<a class="course-card__link" href="http://www.blenda.by/courses/kommercheskaya-fotografiya/" data-bottom-top="transform: translateY(150px);" data-top-bottom="transform: translateY(0px);">
+				<figure class="course-card__img-wrapper image-wrapper">
+					<img class="img-wrapper__img" src="{{ 'assets/dist/img/kommerch_1.jpg'|theme }}" alt="">
+					<p class="course-card__descr">Этот курс для Вас, если Вы всерьез решили заняться фотографией, составить портфолио, создать сайт фотографа, привлечь клиентов из интернета и зарабатывать на своем творчестве без проблем с налоговой.</p>
+					<span class="course-card__descr-link link">
+						<span class="link__text">Перейти к курсу</span>
+						<span class="icon-block">
+							<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+						</span>
+					</span>
+				</figure>
+			</a>
+		</div>
+		<div class="courses-all" data-bottom-top="transform: translateY(150px);" data-top-bottom="transform: translateY(340px);">
+			<p class="courses-all__descr">Ознакомиться со всеми фотокурсами, программами обучения, работами выпускников и ценами вы можете в специальном разделе.</p>
+			<a class="btn courses-all__link" href="{{ 'courses'|page }}">
+				<span class="btn__text">наши курсы</span>
+				<span class="btn__icon"></span>
+			</a>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Отзывы о нашей школе</h2>
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Ваши отзывы очень важны для нас в первую очередь потому, что они нас вдохновляют на развитие и креатив. Спасибо вам за «сарафанное радио», благодаря которому к нам приходит до 40 % учеников по рекомендации выпускников.</h3>
+		</div>
+	</div>
+	<div class="row">
+		<!-- Reviewr photo slider -->
+	    <div class="swiper-container reviewer-photo-slider">
+	        <div class="swiper-wrapper">
+	        	{% for review in reviews %}
+		            <div class="swiper-slide">
+		   				<div class="slide-inner">
+			            	<figure class="review__img-wrapper image-wrapper">
+			            		<img class="img-wrapper__img" src="{{ review.avatar.path }}" alt="{{ review.name }}">
+			            	</figure>
+		            	</div>
+		            </div>
+	            {% endfor %}
+	        </div>
+	        <!-- Add Arrows -->
+	        <div class="review-slider__nav-block">
+				<div class="review-slider__swiper-button-prev swiper-button-prev">
+					<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+						<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+						<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+						<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+					</svg>
+				</div>
+				<div class="review-slider__swiper-button-next swiper-button-next">
+					<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+						<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+						<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+						<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+					</svg>
+				</div>
+				<div class="review-slider__swiper-pagination swiper-pagination"></div>
+			</div>
+	    </div>
+    	<!-- Reviewer info slider -->
+		<div class="swiper-container gallery-middle review-descr-slider">
+	        <div class="swiper-wrapper">
+	        	{% for review in reviews %}
+		            <div class="swiper-slide">
+		            	<div class="review__text-block">
+		            		<h5 class="review__name">{{ review.name }}</h5>
+		            		<p class="review__descr">{{ review.msg }}</p>
+		            		{% if review.link != null %}
+		            			<a class="review__link" href="{{ review.link }}">посмотреть работы студента</a>
+		            		{% endif %}
+		            	</div>
+		            </div>
+	            {% endfor %}
+	        </div>
+	    </div>
+		<!-- Next reviewer photo slider -->
+		<div class="swiper-container next-reviewer-photo-slider">
+	        <div class="swiper-wrapper">
+	        	{% for review in reviews %}
+	        		{% if loop.index!=1 %}
+			            <div class="swiper-slide">
+			            	<div class="slide-inner">
+			            		<figure class="review__img-wrapper image-wrapper">
+				            		<img class="img-wrapper__img" src="{{ review.avatar.path }}" alt="{{ review.name }}">
+				            	</figure>
+			            	</div>
+			            </div>
+			        {% endif %}
+			    {% endfor %}
+			    {% for review in reviews %}
+	        		{% if loop.index==1 %}
+			            <div class="swiper-slide">
+			            	<div class="slide-inner">
+			            		<figure class="review__img-wrapper image-wrapper">
+				            		<img class="img-wrapper__img" src="{{ review.avatar.path }}" alt="{{ review.name }}">
+				            	</figure>
+			            	</div>
+			            </div>
+			        {% endif %}
+			    {% endfor %}
+	        </div>
+	    </div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Будьте в курсе наших событий</h2>
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Здесь вы найдете информацию о ближайших мероприятиях фотошколы, стартах групп и специальных предложениях, а также полезные статьи по фотографии.</h3>
+		</div>
+	</div>
+	<div class="row news-preview-block">
+		{% for item in news %}
+			<div class="col_4">
+				<div class="news-preview">
+					<a href="news/{{ item.slug }}">
+						<figure class="news-preview__img-wrapper">
+							<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.title }}">	
+						</figure>
+					</a>
+					<span class="news-preview__date">{{ item.published_at|date('d.m.Y') }}</span>
+					<a class="news-preview__title" href="news/{{ item.slug }}">{{ item.title }}</a>
+					<p class="news-preview__descr">{{ item.summary }}</p>
+					<a class="news-preview__link" href="news/{{ item.slug }}">Перейти к новости</a>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="row">
+		<div class="col_12 news-all">
+			<a class="btn news-all__link" href="{{ 'news'|page }}">
+				<span class="btn__text">все новости</span>
+				<span class="btn__icon"></span>
+			</a>
+		</div>
+	</div>
+</section>
+
+{% partial 'forms/homepage-banner-form.htm' %}
+
+{% put scripts %}
+	<script>
+		function getNameStoke() {
+			var name = $('#banner-form').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+			console.log('name:' + localStorage.getItem('name'));
+		};
+	</script>
+{% endput %}

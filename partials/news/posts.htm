@@ -1,0 +1,22 @@
+<!-- <h5 class="period-month">июль</h5> -->
+<div class="row">
+    {% for post in posts %}
+	    <div class="post-preview__wrapper">
+	    	<a class="post-preview news" href="../news/{{ post.slug }}">
+		        {% if post.image %}
+		        	<figure class="post-preview__img-wrapper image-wrapper">
+						<img class="img-wrapper__img" src="{{ post.image|media }}" alt="{{ post.title }}">
+					</figure>
+		        {% endif %}
+				<div class="post-preview__short-descr">
+					<span class="short-descr__date">{{ post.published_at|date('d.m.Y') }}</span>
+					<h3 class="short-descr__title">{{ post.title }}</h3>
+			        <p class="short-descr__descr">{{ post.summary }}</p>
+			        <span class="short-descr__link">Читать полностью</span>
+		        </div>
+	        </a>
+	    </div>
+    {% else %}
+    	<span class="post-nodata">{{ noPostsMessage }}</span>
+    {% endfor %}
+</div>

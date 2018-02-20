@@ -1,0 +1,108 @@
+title = "Новости"
+url = "/news"
+layout = "default"
+meta_title = "Новости фотошколы BLENDA"
+meta_description = "Новости фотошколы BLENDA: новинки, акции, события и мероприятия"
+is_hidden = 0
+banner_image = "/page_b/bg-news.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Новости фотошколы BLENDA"
+og_description = "Новости фотошколы BLENDA: новинки, акции, события и мероприятия"
+og_image = "/banners/bg-news.jpg"
+
+[siteSearchInclude]
+==
+<?php
+use Indikator\Content\Models\News;
+
+	function onStart() {
+	    $this->prepareVars();
+	    $this->prepareYears();
+  	}
+
+  	function onFilterYears() {
+	    $this->prepareVars();
+  	}
+
+  	function prepareVars() {
+
+	    $options = post('Filter', []);
+		$this['posts'] = News::where('status', '=', '1')->listFrontEnd($options);
+		$this['pages'] = $this['posts']->lastPage();
+		$this['page'] = $this['posts']->currentPage();
+  	}
+
+  	function prepareYears() {
+	    $posts = News::all();
+	    $years = [];
+
+	    foreach($posts as $post) {
+	    	$years[] = $post->year;
+	    }
+
+	    $years = array_unique($years);
+	    $this['years'] = $years;
+  	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Новости</a>
+	</div>
+	<h1 class="banner__title">Наши новости</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<form data-request="onFilterYears" data-request-update="'news/posts': '#posts', 'news/pagination': '#pagination'" data-request-success="var intervalId;function checkImage() {var images = Array.from(document.images),len = images.length,counter = 0;images.forEach(function(img) {if (typeof img.naturalWidth !== 'undefined' && img.naturalWidth == 0) {return false;};counter += 1;if (len === counter) {window.clearInterval(intervalId);console.log('All images are loaded');var postsHeight = document.getElementById('posts').clientHeight + 50; document.querySelector('.pages-pagination').style = 'top:' + postsHeight +'px';};return true;});} intervalId = window.setInterval(checkImage, 1000);">
+		<div id="postsYearFilter">
+			<div class="tags-cloud__wrapper">
+				<h5 class="tags-cloud__title">архив новостей</h5>
+				<div class="tags-cloud__area">
+					<div class="tags-cloud__select">
+						<span class="tags-cloud__select-input">Выберите период</span>
+						<div class="tags-cloud__select-items">
+							{% for year in years %}
+								<div class="select-items__item">
+									<input class="item__checkbox" type="checkbox" name="Filter[year]" id="year-{{ year }}" value="{{ year }}">
+									<label class="item__label" for="year-{{ year }}">{{ year }}</label>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="tags">
+						{% for year in years %}
+							<span class="tags-cloud__tag news" data-id="{{ year }}">
+								{{ year }}
+								<span class="tag__close">
+									<img src="{{ 'assets/dist/img/icons/cross-tag.svg'|theme }}" alt="Cross">
+								</span>
+							</span>
+						{% endfor %}
+					</div>
+					{% partial 'news/pagination' %}
+				</div>
+			</div>
+		</div>
+	</form>
+	
+	<div id="posts" class="period-block">
+		{% partial 'news/posts' %}
+	</div>
+</section>

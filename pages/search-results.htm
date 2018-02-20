@@ -1,0 +1,99 @@
+title = "Результаты поиска"
+url = "/search-results"
+layout = "default"
+meta_title = "Результаты поиска"
+meta_description = "Результаты поиска"
+is_hidden = 0
+banner_image = "/page_b/bg-search-results.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Результаты поиска"
+
+[searchResults]
+resultsPerPage = 100
+showProviderBadge = 1
+noResultsMessage = "По вашему запросу ничего не найдено"
+visitPageMessage = "Перейти"
+
+[PageBanner]
+==
+<?php
+use OFFLINE\SiteSearch\Classes\ResultCollection;
+
+	function onRun() {
+		$this['resCount'] = $this->resultCollection->count();
+	}
+?>
+==
+{% set results = searchResults.results %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<h1 class="banner__title">Результаты поиска</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container" id="results">
+	<form class="form search" action="{{ 'search-results'|page }}" method="get">
+		<fieldset class="form-fieldset">
+			<input class="form-fieldset__input" type="text" name="q" placeholder="Как настраивать фотоаппарат">
+		</fieldset>
+		<fieldset class="form-fieldset">
+			<button class="btn form-fieldset__btn">
+				<span class="btn__text">поиск</span>
+				<span class="btn__icon"></span>
+			</button>
+		</fieldset>
+	</form>
+	<p class="search-results__results">Найдено по запросу "{{ searchResults.query }}":
+		<!-- {% if results.length != 0 %}
+			{% for result in results %}
+				{% if loop.first %}
+					{{ loop.length }}
+				{% endif %}
+			{% endfor %}
+		{% else %} 
+			0
+		{% endif %} -->
+		{% for result in results %}
+			{% if loop.first %}
+				{{ loop.length }}
+			{% endif %}
+		{% endfor %}
+		совпадений
+	</p>
+	{% for result in results %}
+		<div class="result-item">
+			<figure class="result-item__img-wrapper image-wrapper">
+				<img class="img-wrapper__img" src="{{ result.thumb|media }}" alt="Search">
+			</figure>
+			<div class="result-item__text-block">
+				<a class="text-block__link" href="{{ result.url|app }}">{{ result.title | raw }}</a>
+				<p class="text-block__descr">{{ result.excerpt | raw }}</p>
+			</div>
+		</div>
+	{% else %}
+		<p class="search__no-results">{{ noResultsMessage }}</p>
+	{% endfor %}
+</section>
+
+
+{% put scripts %}
+<script>
+	// $(document).ready(function() {
+	// 	$('body').scrollTo('#results');
+	// });
+	document.getElementById('results').scrollIntoView()
+</script>
+{% endput %}

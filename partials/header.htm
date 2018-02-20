@@ -1,0 +1,115 @@
+<header class="header">
+	<div class="header-wrapper">
+		<a class="logo-link" href="{{ 'home'|page }}">
+			<img class="header-wrapper__logo" src="{{ 'assets/dist/img/logo.png'|theme }}" alt="Logo">
+		</a>
+		<a class="logo-link--fixed" href="{{ 'home'|page }}">
+			<img class="header-wrapper__logo header-wrapper__logo--dark" src="{{ 'assets/dist/img/logo--dark.png'|theme }}" alt="Logo dark">
+		</a>
+		<div class="nav-icon adaptive">
+			<span class="nav-icon__line"></span>
+			<span class="nav-icon__line"></span>
+			<span class="nav-icon__text">меню</span>
+		</div>
+		<nav class="nav">
+			<span class="nav__close adaptive"></span>
+			<div class="nav__nav-visible">
+				<ul class="nav__nav-visible__list">
+					<li class="nav__search">
+						<svg class="nav__search__icon" x="0px" y="0px" viewBox="0 0 93 93">
+							<path d="M92.2,88.3L69.6,65.7c6.1-7,9.7-16.1,9.7-26C79.3,17.8,61.5,0,39.7,0C17.8,0,0,17.8,0,39.7s17.8,39.7,39.7,39.7    c9.9,0,19-3.7,26-9.7l22.6,22.6c0.5,0.5,1.3,0.8,2,0.8c0.7,0,1.4-0.3,2-0.8C93.3,91.1,93.3,89.3,92.2,88.3L92.2,88.3z M5.5,39.7    c0-18.8,15.3-34.1,34.1-34.1c18.8,0,34.1,15.3,34.1,34.1c0,18.8-15.3,34.1-34.1,34.1C20.9,73.8,5.5,58.5,5.5,39.7L5.5,39.7z     M5.5,39.7"/>
+						</svg>
+					</li>
+					<li>
+						<a class="nav-visible__item" href="{{ 'home'|page }}">Главная</a>	
+					</li>
+					<li>
+						<a class="nav-visible__item" href="{{ 'about'|page }}">О фотошколе</a>	
+					</li>
+					<li>
+						<a class="nav-visible__item dropdown-link" href="{{ 'courses'|page }}">Курсы</a>
+						<div class="navigation-dropdown">
+							<div class="navigation-dropdown__container container">
+								<div class="row">
+									<div class="navigation-dropdown__column">
+										<ul class="dropdown-list">
+											{% for item in dropdown_courses_1 %}
+												<li class="dropdown-list__item">
+													<a class="dropdown-list__item__link" href="../courses/{{course.slug}}" aria-label="{{ item.title }}">{{ item.title }}</a>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+									<div class="navigation-dropdown__column">
+										<ul class="dropdown-list">
+											{% for item in dropdown_courses_2 %}
+												<li class="dropdown-list__item">
+													<a class="dropdown-list__item__link" href="../courses/{{course.slug}}" aria-label="{{ item.title }}">{{ item.title }}</a>
+												</li>
+											{% endfor %}
+										</ul>
+									</div>
+									<div class="navigation-dropdown__column">
+										<ul class="dropdown-list">
+											{% for item in dropdown_courses_3 %}
+												<li class="dropdown-list__item">
+													<a class="dropdown-list__item__link" href="../courses/{{course.slug}}" aria-label="{{ item.title }}">{{ item.title }}</a>
+												</li>
+											{% endfor %}
+											<li class="dropdown__all-courses-link">
+												<a href="{{ 'courses'|page }}" aria-label="перейти на страницу с курсами">перейти на страницу с курсами</a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>	
+					</li>
+					<li>
+						<a class="nav-visible__item" href="{{ 'blog'|page }}">Блог</a>	
+					</li>
+					<li>
+						<a class="nav-visible__item" href="{{ 'reviews'|page }}">Отзывы</a>
+					</li>
+				</ul>
+			</div>
+			<div class="nav__nav-hidden">
+				<span class="nav__close desktop"></span>
+				<a class="nav-hidden__item" href="{{ 'teachers'|page }}">Преподаватели</a>
+				<a class="nav-hidden__item" href="{{ 'gallery'|page }}">Галерея</a>
+				<a class="nav-hidden__item" href="{{ 'news'|page }}">Новости</a>
+				<a class="nav-hidden__item" href="{{ 'faq'|page }}">FAQ</a>
+				<a class="nav-hidden__item" href="{{ 'franchise'|page }}">Франшиза</a>
+				<a class="nav-hidden__item" href="{{ 'contacts'|page }}">Контакты</a>
+				<div class="social-block">
+					<p class="social-block__title">Мы в социальных сетях</p>
+					<a class="social-block__link" href="#" target="_blank">Вконтакте</a>
+					<a class="social-block__link" href="#" target="_blank">Facebook</a>
+					<a class="social-block__link" href="#" target="_blank">Instagram</a>
+				</div>
+			</div>
+			<div class="nav-icon desktop">
+				<span class="nav-icon__line"></span>
+				<span class="nav-icon__line"></span>
+				<span class="nav-icon__text">меню</span>
+			</div>
+		</nav>
+		<div class="nav__nav-hidden desktop">
+			<span class="nav__close nav__close--desktop desktop"></span>
+			<a class="nav-hidden__item" href="{{ 'teachers'|page }}">Преподаватели</a>
+			<a class="nav-hidden__item" href="{{ 'gallery'|page }}">Галерея</a>
+			<a class="nav-hidden__item" href="{{ 'news'|page }}">Новости</a>
+			<a class="nav-hidden__item" href="{{ 'faq'|page }}">FAQ</a>
+			<a class="nav-hidden__item" href="{{ 'franchise'|page }}">Франшиза</a>
+			<a class="nav-hidden__item" href="{{ 'contacts'|page }}">Контакты</a>
+			<div class="social-block">
+				<p class="social-block__title">Мы в социальных сетях</p>
+				<a class="social-block__link" href="{{ vk_link }}" target="_blank">Вконтакте</a>
+				<a class="social-block__link" href="{{ fb_link }}" target="_blank">Facebook</a>
+				<a class="social-block__link" href="{{ insta_link }}" target="_blank">Instagram</a>
+			</div>
+		</div>
+		<div class="overlay"></div>
+	</div>
+	{% partial 'search' %}
+</header>

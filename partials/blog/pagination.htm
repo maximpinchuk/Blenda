@@ -1,0 +1,17 @@
+<div class="pages-pagination">
+	{% if posts.lastPage > 1 %}
+		{{ form_ajax('onFilter', {update: { 'blog/posts': '#posts'} }) }}
+			<div id="pageFilter">
+				{% for page in 1..pages %}
+					{% if i == page %}
+						<input class="pages-pagination__item-hidden" type="radio" name="Filter[page]" id="page-{{ page }}" value="{{ page }}">
+						<label class="pages-pagination__item active" for="page-{{ page }}">{{ page }}</label>
+					{% else %}
+						<input class="pages-pagination__item-hidden" type="radio" name="Filter[page]" id="page-{{ page }}" value="{{ page }}">
+						<label class="pages-pagination__item" for="page-{{ page }}">{{ page }}</label>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{{ form_close() }}
+	{% endif %}
+</div>

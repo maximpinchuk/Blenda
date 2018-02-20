@@ -1,0 +1,130 @@
+{% if contacts_form_published == true %}
+	<section class="section container">
+		<div class="row">
+			<div class="col_5">
+				<h2 class="section__title">{{ contacts_form_title }}</h2>
+			</div>
+			<div class="col_7">
+				<h3 class="section__subtitle">{{ contacts_form_subtitle }}</h3>
+			</div>
+		</div>
+		{% if contacts_form_scenario == 1 %}
+		<form class="form inline-form" data-request="{{ contactInlineForm }}::onFormSubmit" data-request-validate data-request-success="{{ contacts_form_scripts }} $('[data-remodal-id=contacts-success]').remodal().open();">
+		{% elseif contacts_form_scenario == 2 %}
+		<form class="form inline-form" data-request="{{ contactInlineForm }}::onFormSubmit" data-request-validate data-request-success="{{ contacts_form_scripts }} $('[data-remodal-id=contacts-pre-gift]').remodal().open(); getName();">
+		{% endif %}
+			{{ form_token() }}
+			<input type="hidden" name="theme" value="Связаться с нами">
+
+			<div class="form_flash" id="{{ contactInlineForm }}_forms_flash"></div>
+			
+			<div class="form__row">
+				<fieldset class="form-fieldset form-group">
+					<label class="form-fieldset__label">Введите ваше имя</label>
+					<input class="form-fieldset__input" type="text" name="name" placeholder="Иван">
+					<span class="form-fieldset__error" data-validate-for="tel"></span>
+				</fieldset>
+				<fieldset class="form-fieldset form-group">
+					<label class="form-fieldset__label">Введите ваш телефон</label>
+					<input class="form-fieldset__input input-tel" type="tel" name="tel" maxlength="20" placeholder="+ 375 (__) ___-__-__">
+					<span class="form-fieldset__error" data-validate-for="tel"></span>
+				</fieldset>
+				<fieldset class="form-fieldset col_4 form-group">
+					<label class="form-fieldset__label">Введите вашу почту</label>
+					<input class="form-fieldset__input" type="email" name="email" placeholder="example@mail.com">
+					<span class="form-fieldset__error" data-validate-for="tel"></span>
+				</fieldset>
+			</div>
+			<div class="form__row">
+				<fieldset class="form-fieldset full form-group">
+					<label class="form-fieldset__label">Задайте свой вопрос</label>
+					<textarea class="form-fieldset__input textarea" name="msg" placeholder="Здесь будет ваш вопрос"></textarea>
+					<span class="form-fieldset__error" data-validate-for="msg"></span>
+				</fieldset>
+			</div>
+			<div class="form__row">
+				<button class="btn form__btn">
+					<span class="btn__text">{{ contacts_form_btntext }}</span>
+					<span class="btn__icon"></span>
+				</button>
+			</div>
+			<input type="hidden" name="url" value="">
+		</form>
+	</section>
+
+	{% if contacts_form_scenario == 1 %}
+		<div class="remodal-bg">
+		    <div class="remodal small popup" data-remodal-id="contacts-success">
+		        <div data-remodal-action="close" class="remodal-close">
+		            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+		                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+		            </svg>
+		        </div>
+		        <h4 class="popup__title center">{{ contacts_form_success_title }}</h4>
+		        <p class="popup__subtitle center">{{ contacts_form_success_subtitle }}</p>
+		    </div>
+		</div>
+	{% elseif contacts_form_scenario == 2 %}
+		<div class="remodal-bg">
+		    <div class="remodal small popup" data-remodal-id="contacts-pre-gift">
+		        <div data-remodal-action="close" class="remodal-close">
+		            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+		                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+		            </svg>
+		        </div>
+		        <h4 class="popup__title center">{{ contacts_form_pregift_title }}</h4>
+		        <p class="popup__subtitle center">{{ contacts_form_pregift_subtitle }}</p>
+		        <button class="btn btn--alone large white" data-remodal-target="contacts-gift">
+		            <span class="btn__text">{{ contacts_form_pregift_btntext }}</span>
+		            <span class="btn__icon"></span>
+		        </button>
+		    </div>
+		</div>
+
+		<div class="remodal-bg">
+		    <div class="remodal large popup" data-remodal-id="contacts-gift">
+		        <div data-remodal-action="close" class="remodal-close">
+		            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+		                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+		            </svg>
+		        </div>
+		        <div class="row">
+		            <div class="col_5">
+		                <h4 class="popup__title">{{ contacts_form_gift_title }}</h4>
+		            </div>
+		            <div class="col_7">
+		                <p class="popup__subtitle">{{ contacts_form_gift_subtitle }}</p>
+		            </div>
+		        </div>
+		        <form class="form popup-form" data-request="onSendGiftSmall" data-request-update="popups: '.remodals'" data-request-validate data-request-success="{{ contacts_form_gift_scripts }} $('[data-remodal-id=contacts-success-gift]').remodal().open();" data-request-error="$('[data-remodal-id=error]').remodal().open();">
+		            <div class="form__row">
+		                <input type="hidden" name="name" value="">
+		                <input type="hidden" name="url" value="">
+		                <input type="hidden" name="campaign" value="{{ contacts_form_gift_campaign }}">
+		                <fieldset class="form-fieldset col_6 form-group">
+		                    <label class="form-fieldset__label">Введите вашу почту</label>
+		                    <input class="form-fieldset__input" type="email" name="email" placeholder="example@mail.com">
+		                    <span class="form-fieldset__error" data-validate-for="email"></span>
+		                </fieldset>
+		                <button class="btn form__btn small white">
+		                    <span class="btn__text">{{ contacts_form_gift_btntext }}</span>
+		                    <span class="btn__icon"></span>
+		                </button>
+		            </div>
+		        </form>
+		    </div>
+		</div>
+
+		<div class="remodal-bg">
+		    <div class="remodal small popup" data-remodal-id="contacts-success-gift">
+		        <div data-remodal-action="close" class="remodal-close">
+		            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+		                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+		            </svg>
+		        </div>
+		        <h4 class="popup__title center">{{ contacts_form_successgift_title }}</h4>
+		        <p class="popup__subtitle center">{{ contacts_form_successgift_subtitle }}</p>
+		    </div>
+		</div>
+	{% endif %}
+{% endif %}

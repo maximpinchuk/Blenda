@@ -1,0 +1,35 @@
+.franchise__title {
+	margin: 0;
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+	font-size: 2rem;
+	color: #4c4c4c;
+	line-height: (46/36);
+	@include grid-breakpoint(sm) {
+		font-size: 2.125rem;
+	}
+	@include grid-breakpoint(md) {
+		font-size: 2.25rem;
+	}
+	@include grid-breakpoint(lg) {
+		font-size: 2.25rem;
+	}
+}
+
+.franchise__subtitle {
+	margin: 40px 0 0 0;
+	font-family: 'Lato', sans-serif;
+	font-size: 1.125rem;
+	color: #5a5a5a;
+	line-height: (24/18);
+	@include grid-breakpoint(sm) {
+		font-size: 1.125rem;
+	}
+	@include grid-breakpoint(md) {
+		margin: 35px 0 0 0;
+		font-size: 1.125rem;
+	}
+	@include grid-breakpoint(lg) {
+		font-size: 1.125rem;
+	}
+}

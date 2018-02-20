@@ -1,0 +1,148 @@
+title = "Курсы"
+url = "/courses"
+layout = "default"
+meta_title = "Курсы фотографии в Минске"
+meta_description = "Обучение фотографии в Минске с возможностью прохождения уроков онлайн"
+is_hidden = 0
+banner_image = "/page_b/bg-courses.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Курсы фотографии в Минске от фотошколы BLENDA"
+og_description = "Обучение фотографии в Минске по 12 направлениям фотографии и обработки"
+og_image = "/banners/bg-courses.jpg"
+
+[siteSearchInclude]
+
+[PageBanner]
+
+[genericForm podobratPopupForm]
+group = "Подобрать курс"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+form_title = "Подобрать курс"
+form_subtitle = "Мы с удовольствием ответим на все интересующие Вас вопросы и поможем подобрать подходящий курс."
+form_btn_text = "отправить"
+messages_success_title = "Ура! Ваша заявка успешно отправлена"
+messages_success_subtitle = "Наш администратор свяжется с Вами в ближайшее время."
+mail_enabled = 1
+mail_subject = "Подобрать курс"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+==
+<?php
+	use Spaced\Blenda\Models\Course;
+	use Spaced\Blenda\Models\Settings;
+
+	function onStart() {
+		$this['courses'] = Course::where('course_visibility', '=', '1')->orderBy('course_order', 'asc')->get();
+
+		$this['courses_form_published'] = Settings::get('courses_form_published');
+		$this['courses_form_scenario'] = Settings::get('courses_form_scenario');
+		$this['courses_form_title'] = Settings::get('courses_form_title');
+		$this['courses_form_subtitle'] = Settings::get('courses_form_subtitle');
+		$this['courses_form_btntext'] = Settings::get('courses_form_btntext');
+		$this['courses_form_scripts'] = Settings::get('courses_form_scripts');
+
+		$this['courses_form_success_title'] = Settings::get('courses_form_success_title');
+		$this['courses_form_success_subtitle'] = Settings::get('courses_form_success_subtitle');
+
+		$this['courses_form_pregift_title'] = Settings::get('courses_form_pregift_title');
+		$this['courses_form_pregift_subtitle'] = Settings::get('courses_form_pregift_subtitle');
+		$this['courses_form_pregift_btntext'] = Settings::get('courses_form_pregift_btntext');
+
+		$this['courses_form_gift_title'] = Settings::get('courses_form_gift_title');
+		$this['courses_form_gift_subtitle'] = Settings::get('courses_form_gift_subtitle');
+		$this['courses_form_gift_btntext'] = Settings::get('courses_form_gift_btntext');
+		$this['courses_form_gift_scripts'] = Settings::get('courses_form_gift_scripts');
+		$this['courses_form_gift_campaign'] = Settings::get('courses_form_gift_campaign');
+
+		$this['courses_form_successgift_title'] = Settings::get('courses_form_successgift_title');
+		$this['courses_form_successgift_subtitle'] = Settings::get('courses_form_successgift_subtitle');
+
+		$this['courses_descr_title'] = Settings::get('courses_descr_title');
+		$this['courses_descr_subtitle'] = Settings::get('courses_descr_subtitle');
+		$this['courses_descr_content'] = Settings::get('courses_descr_content');
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Курсы</a>
+	</div>
+	<h1 class="banner__title">Наши курсы</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="container">
+	<div class="courses-wrapper">
+		{% for course in courses %}
+			<div class="course">
+				<a href="../courses/{{course.slug}}">
+					<figure class="course__img-wrapper image-wrapper">
+						{% for item in course.category %}
+							<span class="course__label" style="background-color: {{ item.color }}">{{ item.title }}</span>
+						{% endfor %}
+						<img class="img-wrapper__img" src="{{ course.banner|media }}" alt="{{ course.banner_alt }}">
+					</figure>
+				</a>
+				<a href="../courses/{{course.slug}}">
+					<h3 class="course__title">{{ course.title }}</h3>
+				</a>
+				<p class="course__descr">{{ course.descr_short }}</p>
+			</div>
+		{% endfor %}
+	</div>
+
+	{% if courses_form_published == true %}
+		<button class="btn courses__btn" data-remodal-target="podobrat-course">
+			<span class="btn__text">подобрать курс</span>
+			<span class="btn__icon"></span>
+		</button>
+	{% endif %}
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">{{ courses_descr_title }}</h2>
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">{{ courses_descr_subtitle }}</h3>
+		</div>
+	</div>
+	<div class="courses-descr">
+		{{ courses_descr_content|raw }}
+	</div>
+</section>
+
+{% partial 'forms/courses-page-form' %}
+
+{% put scripts %}
+	<script>
+		function getName() {
+			var name = $('div[data-remodal-id="podobrat-course"]').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+	</script>
+{% endput %}

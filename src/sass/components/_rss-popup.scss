@@ -1,0 +1,121 @@
+.rss-popup-overlay {
+	position: fixed;
+	right: 0;
+	bottom: 0;
+	z-index: 999998;
+	display: none;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	&--active {
+		display: block;
+	}
+}
+
+.rss-popup {
+	position: fixed;
+	right: 15px;
+	bottom: 50%;
+	z-index: 999999;
+	display: none;
+	width: calc(100% - 30px);
+	padding: 30px 35px;
+	border-radius: 5px;
+	background-color: $accent-color;
+	transform: translateY(50%);
+	&--active {
+		display: block;
+	}
+
+	@include grid-breakpoint(xs) {
+		padding: 35px 20px;
+	}
+
+	@include grid-breakpoint(sm) {
+		right: 30px;
+		bottom: 50px;
+		width: 400px;
+		padding: 30px 35px;
+		border-radius: 5px;
+		background-color: $accent-color;
+		transform: translateY(0);
+	}
+
+	.rss-popup__title {
+		margin: 0;
+		font-family: "Lato", "Arial", sans-serif;
+		font-weight: 700;
+		font-size: 0.875rem;
+		color: #ffffff;
+		line-height: (20/14);
+		text-transform: uppercase;
+	}
+}
+
+.rss-form {
+	margin-top: 20px;
+	.rss-form__fieldset {
+		margin: 0;
+		padding: 0;
+		border: none;
+	}
+	.rss-form__control {
+		width: 100%;
+		height: 40px;
+		padding-left: 25px;
+		font-family: "Lato", "Arial", sans-serif;
+		font-weight: 500;
+		font-size: 0.875rem;
+		color: #d0d0d0;
+		background-color: #ffffff;
+		border-radius: 3px;
+		border: none;
+		outline: none;
+		&:focus {
+			border: 1px solid $accent-color;
+		}
+	}
+	.rss-form__error {
+		display: block;
+		margin: 7px 0 0 0;
+		font-family: 'Lato', sans-serif;
+		font-size: 0.875rem;
+		color: $error;
+	}
+	.rss-form__buttons {
+		margin-top: 30px;
+		.rss-form__buttons__button {
+			height: 40px;
+			margin: 10px 0;
+			font-family: "Lato", "Arial", sans-serif;
+			font-weight: 700;
+			font-size: 0.875rem;
+			color: $accent-color;
+			background-color: #ffffff;
+			border: 1px solid #ffffff;
+			cursor: pointer;
+			transition: background-color 0.3s,
+						color 0.3s;
+			@include grid-breakpoint(xs) {
+				margin: 0;
+			}
+			&:hover {
+				color: #ffffff;
+				background-color: transparent;
+			}
+			&.submit {
+				width: 100%;
+				@include grid-breakpoint(xs) {
+					width: 140px;
+					margin-right: 6px;	
+				}
+			}
+			&.cancel {
+				width: 100%;
+				@include grid-breakpoint(xs) {
+					width: 180px;	
+				}
+			}
+		}
+	}
+}

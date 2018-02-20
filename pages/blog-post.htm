@@ -1,0 +1,248 @@
+title = "Статья"
+url = "/blog/:slug"
+layout = "default"
+meta_title = "Статья"
+meta_description = "Статья"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+
+[siteSearchInclude]
+
+[blogPage]
+slug = "{{ :slug }}"
+categoryPage = "blog-categories"
+redirectPage = 404
+==
+<?php
+use Indikator\Content\Models\Blog;
+
+	function onStart() {
+		$post = Blog::where('slug', '=', $this->param('slug'))->first();
+		$this['post'] = $post;
+
+		$rel = $post->related_blog;
+		$rels = [];
+
+		foreach ($rel as $item) {
+			foreach($item as $key => $value) {
+				$rels[] = $value;
+			}
+		}
+		
+		$relatedPosts = Blog::whereIn('id', $rels)->get();
+		$this['relatedPosts'] = $relatedPosts;
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+{% put og_post %}
+	<title>{{ post.title }}</title>
+	<meta name="title" content="{{ post.title }}">
+	<meta name="description" content="{{ post.title }}">
+	<meta name="keywords" content="">
+	<link rel="canonical" href="{{ ''|page }}">
+	<meta name="robots" content="index, follow">
+
+	<meta property="og:title" content="{{ post.title }}">
+	<meta property="og:url" content="{{ ''|page }}">
+	<meta property="og:description" content="{{ post.title }}">
+	<meta property="og:image" content="www.blenda.spaced.by{{ post.image|media }}">
+	<meta property="og:site_name" content="blenda.by">
+	<meta property="og:type" content="website">
+	<meta property="fb:app_id" content="387697734979512">
+{% endput %}
+
+{% put twitter_share %}
+	<script>
+		var socialLikesButtons = {
+		  	twitter: {
+		    	counterUrl: 'https://opensharecount.com/count.json?url={url}',
+		    	convertNumber: function(data) {
+		      		return data.count;
+		    	}
+		  	}
+		};
+	</script>
+{% endput %}
+
+<section class="banner post">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ post.image|media }}" alt="{{ post.title }}">
+	</figure>
+	<div class="container post-banner-wrapper">
+		<div class="breadcrumbs post">
+			<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+			<a class="breadcrumbs__link" href="{{ 'blog'|page }}">Блог</a>
+			<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">{{ post.title }}</a>
+		</div>
+		<h1 class="banner__title">{{ post.title }}</h1>
+		<div class="post-info__wrapper">
+			<div class="post-info__block w3">
+				<h5 class="post-info__title">автор статьи</h5>
+				{% for item in post.tags %}
+					<a class="post-info__link" href="../authors/{{ item.slug }}">
+						<span class="post-info__text">{{ item.name }}</span>
+					</a>
+				{% endfor %}
+			</div>
+			<div class="post-info__block w2">
+				<h5 class="post-info__title">дата</h5>
+				<span class="post-info__text">{{ post.published_at|date('d.m.Y') }}</span>
+			</div>
+			<div class="post-info__block w5">
+				<h5 class="post-info__title">рубрика</h5>
+				<div class="post-info__headings">
+					{% for tag in post.categories %}
+						<a href="../categories/{{ tag.slug }}">
+							<span class="headings__item">{{ tag.name }}</span>
+						</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<article class="article" id="article">
+		    {{ post.content|raw }}
+                    {% if post.files %}
+			    <div class="post-files">
+			    	<h6 class="post-files__title">Прикрепленные файлы</h6>
+			    	{% for item in post.files %}
+						<div class="post-files__file">
+							<a class="file__link" href="{{ item.file_path|media }}">{{ item.file_name }}</a>
+						</div>
+			    	{% endfor %}
+			    </div>
+		    {% endif %}
+			<div class="post-after">
+				<span class="post-after__title">Поделиться в социальных сетях</span>
+				<div class="social-likes social-likes_light" data-url="{{ ''|page }}" data-zeroes="yes">
+					<div class="vkontakte" title="Vkontakte">Вконтакте</div>
+					<div class="facebook" title="Facebook">Facebook</div>
+					<div class="twitter" title="Twitter">Twitter</div>
+				</div>
+
+				<span class="post-after_info">
+					<img class="info__icon" src="{{ 'assets/dist/img/icons/reposts.svg'|theme }}">
+					<span class="shares_count"></span>
+				</span>
+				<!-- <span class="post-after_info">
+					<img class="info__icon" src="{{ 'assets/dist/img/icons/comments.svg'|theme }}">
+					<span class="disqus-comment-count" data-disqus-identifier="{{ post.title }}"></span>
+				</span> -->
+				<span class="post-after_info">
+					<img class="info__icon" src="{{ 'assets/dist/img/icons/views.svg'|theme }}">
+					{{ post.stat_view }}
+				</span>
+			</div>
+			<div id="hypercomments_widget" class="comments-block"></div>
+		</article>
+		<aside class="aside">
+			<h4 class="aside__title">Рекомендуемое</h4>
+			{% for item in relatedPosts %}
+				<a class="post-preview blog" href="../{{ item.slug }}">
+					<figure class="post-preview__img-wrapper image-wrapper">
+						<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.title }}">
+					</figure>
+					<div class="post-preview__short-descr">
+						{% for item in item.tags %}
+							<span class="short-descr__author">{{ item.name }}</span>
+						{% endfor %}
+						<h3 class="short-descr__title">{{ item.title }}</h3>
+						<p class="short-descr__descr">{{ item.summary }}</p>
+						<span class="short-descr__heading">рубрика: </span>
+						{% for category in item.categories %}
+							<span class="short-descr__heading-items">{{ category.name }}</span>
+						{% endfor %}
+						<span class="short-descr__date">{{ item.published_at|date('d.m.Y') }}</span>
+					</div>
+				</a>
+			{% endfor %}
+		</aside>
+	</div>
+</section>
+
+{% put scripts %}
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '387697734979512',
+          xfbml      : true,
+          version    : 'v2.10'
+        });
+        FB.AppEvents.logPageView();
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "//connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+	<script>
+	    _hcwp = window._hcwp || [];
+	    _hcwp.push({widget:"Stream", widget_id: 95786});
+	    (function() {
+	    if("HC_LOAD_INIT" in window)return;
+	    HC_LOAD_INIT = true;
+	    var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+	    var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+	    hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/95786/"+lang+"/widget.js";
+	    var s = document.getElementsByTagName("script")[0];
+	    s.parentNode.insertBefore(hcc, s.nextSibling);
+	    })();
+	</script>
+	
+	<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/7103/jquery.responsiveinstagram_copy.js"></script>
+	
+	<script>
+	    function fbCounts() {
+	        setTimeout(function(){
+    	        var promise = fetch('https://graph.facebook.com/?id={{ ''|page }}')
+    	            .then(function(response) {
+                        console.log(response.status); // 200
+                        return response.json();
+                    })
+                    .then(function(data) {
+                        console.log(data.share.share_count); // iliakan
+                        var fbCounters = $('.social-likes__counter_facebook');
+                        fbCounters.text(data.share.share_count);
+                        return data.share.share_count;
+                    })
+                    .catch( alert );
+	        }, 2000);
+	    }
+	    fbCounts();
+	    
+	    function allCounts() {
+            setTimeout(function() {
+                var vk_counts = document.querySelector('.social-likes__counter_vkontakte').innerHTML;
+                var fb_counts = document.querySelector('.social-likes__counter_facebook').innerHTML;
+                var number = Number(vk_counts) + Number(fb_counts);
+                document.querySelector('.shares_count').innerHTML = number;  
+            }, 3000);
+	    }
+	    allCounts();
+
+ 		function images() {
+			var article = document.getElementById('article'); 
+			var images = article.getElementsByTagName('img');
+			for (var i = 0; i < images.length; i++) {
+				images[i].removeAttribute('style');
+			}
+		};
+		images();
+		
+		//$(window).on('load resize', function () {
+        //    $('iframe.instagram').responsiveInstagram();
+        //});
+	</script>
+	<script src="https://platform.instagram.com/en_US/embeds.js"></script>
+{% endput %}

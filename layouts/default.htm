@@ -1,0 +1,152 @@
+description = "Default layout"
+
+[Getresponse]
+emails[] = "m.pinchuk1995@gmail.com"
+success_title = "Спасибо!"
+success_subtitle = "Проверьте почту, подтвердите подписку и ждите подарок :)"
+
+[GetResponseGift]
+emails[] = "m.pinchuk1995@gmail.com"
+popup_title = "Получить подарок"
+popup_subtitle = "Оставьте заявку и наши администраторы подробно расскажут Вам, как получить курс по обработке фото  в подарок"
+popup_btn_text = "получить подарок"
+success_title = "Спасибо!"
+success_subtitle = "В ближайшее время с Вами свяжутся наши администраторы"
+
+[GetResponseGiftSmall]
+emails[] = "m.pinchuk1995@gmail.com"
+popup_title = "Заявка на подарок"
+popup_btn_text = "получить подарок"
+success_title = "Спасибо!"
+success_subtitle = "Ваш подарок ждет Вас на почте, только подвердите подписку :)"
+
+[seoTags]
+==
+<?php
+use Spaced\Blenda\Models\Settings;
+use Spaced\Blenda\Models\Course;
+
+    function onStart() {
+        $this['vk_link'] = Settings::get('vk_link');
+        $this['fb_link'] = Settings::get('fb_link');
+        $this['insta_link'] = Settings::get('insta_link');
+        $this['email'] = Settings::get('email');
+        $this['address'] = Settings::get('address');
+        $this['contacts'] = Settings::get('contacts');
+
+        $this['subscribe_form_published'] = Settings::get('subscribe_form_published');
+        $this['subscribe_form_scenario'] = Settings::get('subscribe_form_scenario');
+        $this['subscribe_form_scripts'] = Settings::get('subscribe_form_scripts');
+        $this['subscribe_form_campaign'] = Settings::get('subscribe_form_campaign');
+    
+        $this['subscribe_form_success_title'] = Settings::get('subscribe_form_success_title');
+        $this['subscribe_form_success_subtitle'] = Settings::get('subscribe_form_success_subtitle');
+
+        $this['subscribe_form_pregift_title'] = Settings::get('subscribe_form_pregift_title');
+        $this['subscribe_form_pregift_subtitle'] = Settings::get('subscribe_form_pregift_subtitle');
+        $this['subscribe_form_pregift_btntext'] = Settings::get('subscribe_form_pregift_btntext');
+
+        $this['subscribe_form_gift_title'] = Settings::get('subscribe_form_gift_title');
+        $this['subscribe_form_gift_subtitle'] = Settings::get('subscribe_form_gift_subtitle');
+        $this['subscribe_form_gift_btntext'] = Settings::get('subscribe_form_gift_btntext');
+        $this['subscribe_form_gift_scripts'] = Settings::get('subscribe_form_gift_scripts');
+        $this['subscribe_form_gift_campaign'] = Settings::get('subscribe_form_gift_campaign');
+    
+        $this['subscribe_form_successgift_title'] = Settings::get('subscribe_form_successgift_title');
+        $this['subscribe_form_successgift_subtitle'] = Settings::get('subscribe_form_successgift_subtitle');
+
+        $this['gift_form_title'] = Settings::get('gift_form_title');
+        $this['gift_form_subtitle'] = Settings::get('gift_form_subtitle');
+        $this['gift_form_btntext'] = Settings::get('gift_form_btntext');
+        $this['gift_form_scripts'] = Settings::get('gift_form_scripts');
+        $this['gift_form_campaign'] = Settings::get('gift_form_campaign');
+
+        $this['gift_form_success_title'] = Settings::get('gift_form_success_title');
+        $this['gift_form_success_subtitle'] = Settings::get('gift_form_success_subtitle');
+
+        $cols = 3;
+        $coursesCount = $this['dropdown_courses'] = Course::where('course_visibility', '=', '1')->orderBy('course_order', 'asc')->count();
+        $averg = $coursesCount / $cols;
+        $averg = floor($averg);
+        $col1 = $averg;
+        $col2 = $averg;
+        $col3 = $coursesCount - ($col1 + $col2);
+        $this['dropdown_courses_1'] = Course::where('course_visibility', '=', '1')->orderBy('course_order', 'asc')->take($col1)->get();
+        $this['dropdown_courses_2'] = Course::where('course_visibility', '=', '1')->orderBy('course_order', 'asc')->skip($col1)->take($col2)->get();
+        $this['dropdown_courses_3'] = Course::where('course_visibility', '=', '1')->orderBy('course_order', 'asc')->skip($col1 + $col2)->take($col3)->get();
+    }
+?>
+==
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+    <!-- Google Tag Manager -->
+<!-- <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-WWPKDQX');</script> -->
+<!-- End Google Tag Manager -->
+        <meta name="p:domain_verify" content="57a314f543a5440db3a6493d6e4b2df0"/>
+
+        <meta charset="utf-8">
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="mailru-verification" content="b64e2ec7a898e482" />
+
+        {% component 'seoTags' %}
+
+        <link rel="stylesheet" type="text/css" href="{{ 'assets/dist/css/main.css'|theme }}">
+
+        <link rel="icon" sizes="192x192" href="{{ 'assets/dist/img/favicons/favicon_192x192.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{{ 'assets/dist/img/favicons/favicon_180x180.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="152x152" href="{{ 'assets/dist/img/favicons/favicon_152x152.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="144x144" href="{{ 'assets/dist/img/favicons/favicon_144x144.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="120x120" href="{{ 'assets/dist/img/favicons/favicon_120x120.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="114x114" href="{{ 'assets/dist/img/favicons/favicon_114x114.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="76x76" href="{{ 'assets/dist/img/favicons/favicon_76x76.png'|theme }}">
+        <link rel="apple-touch-icon" sizes="72x72" href="{{ 'assets/dist/img/favicons/favicon_72x72.png'|theme }}">
+        <link rel="shortcut icon" href="{{ 'assets/dist/img/favicons/favicon_64x64.png'|theme }}">
+        {% styles %}
+
+        {% placeholder twitter_share %}
+    </head>
+    <body id="skrollr-body">
+    <!-- Google Tag Manager (noscript) -->
+<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WWPKDQX"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
+<!-- End Google Tag Manager (noscript) -->
+        {% partial 'header' %}
+
+    	{% page %}
+
+        {% partial 'footer' %}
+
+        <a href="#top" class="scrollup">
+            <svg class="scrollup__icon" viewBox="0 0 59 59">
+                <path d="M17.8,30.1"></path>
+                <g>
+                    <line x1="29.5" y1="15.5" x2="29.5" y2="43.5"></line>
+                    <polyline points="17.4,27.6 29.5,15.5 41.6,27.6  "></polyline>
+                </g>
+                <rect x="0.5" y="0.5" class="st0" width="58" height="58"></rect>
+            </svg>
+        </a>
+
+        <div class="remodals">
+            {% partial 'popups' %}
+        </div>
+
+    	<!-- Scripts -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="{{ 'assets/dist/js/all.js'|theme }}"></script>
+        {% framework extras %}
+        {% scripts %}
+        
+        <!— BEGIN JIVOSITE CODE {literal} —> 
+<!-- <script type='text/javascript'> 
+(function(){ var widget_id = 'MGHy3mZknZ';var d=document;var w=window;function l(){ 
+var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = '//code.jivosite.com/script/widget/'+widget_id; var ss = document.getElementsByTagName('script')[0]; ss.parentNode.insertBefore(s, ss);}if(d.readyState=='complete'){l();}else{if(w.attachEvent){w.attachEvent('onload',l);}else{w.addEventListener('load',l,false);}}})();</script>  -->
+<!— {/literal} END JIVOSITE CODE —>
+    </body>
+</html>

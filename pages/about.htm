@@ -1,0 +1,497 @@
+title = "О фотошколе"
+url = "/about"
+layout = "default"
+meta_title = "О фотошколе BLENDA Павла Бабарыкина"
+meta_description = "Лучшая фотошкола Беларуси: обучение фотографии под руководством профессиональных фотографов страны"
+is_hidden = 0
+banner_image = "/page_b/bg-about.jpg"
+btn_check = 0
+btn_text = "Все курсы"
+btn_link = "www.google.by"
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Фотошкола BLENDA: обучение фотографии до результата"
+og_type = "website"
+og_description = "Blenda: курсы фотографии в Минске для новичков и профессионалов"
+og_image = "/banners/blenda.jpg"
+
+[genericForm learnPopupForm]
+group = "Узнать больше"
+rules[name] = "required"
+rules[tel] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+form_title = "Подобрать курс"
+form_subtitle = "Мы с удовольствием ответим на все интересующие вас вопросы и поможем подобрать подходящий курс."
+form_btn_text = "отправить"
+messages_success_title = "Форма успешно отправлена"
+messages_success_subtitle = "Скоро мы с вами свяжемся"
+mail_enabled = 1
+mail_subject = "Узнать больше"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+
+[siteSearchInclude]
+
+[PageBanner]
+==
+<?php
+use Spaced\Blenda\Models\Student;
+	use Spaced\Blenda\Models\Team;
+	use Spaced\Blenda\Models\Settings;
+
+	function onStart() {
+		$this['students'] = Student::where('slider_check', true)->get();
+		$this['team'] = Team::orderBy('team_order', 'asc')->get();
+		$this['learn_gallery'] = Settings::get('learn_gallery');
+		$this['lessons_gallery'] = Settings::get('lessons_gallery');
+		$this['about_cta_title'] = Settings::get('about_cta_title');
+		$this['about_cta_subtitle'] = Settings::get('about_cta_subtitle');
+		$this['about_cta_btn_text'] = Settings::get('about_cta_btn_text');
+
+		$this['about_cta_form_published'] = Settings::get('about_cta_form_published');
+		$this['about_cta_form_scenario'] = Settings::get('about_cta_form_scenario');
+		$this['about_cta_form_title'] = Settings::get('about_cta_form_title');
+		$this['about_cta_form_subtitle'] = Settings::get('about_cta_form_subtitle');
+		$this['about_cta_form_btntext'] = Settings::get('about_cta_form_btntext');
+		$this['about_cta_form_scripts'] = Settings::get('about_cta_form_scripts');
+	
+		$this['about_cta_form_success_title'] = Settings::get('about_cta_form_success_title');
+		$this['about_cta_form_success_subtitle'] = Settings::get('about_cta_form_success_subtitle');
+
+		$this['about_cta_form_pregift_title'] = Settings::get('about_cta_form_pregift_title');
+		$this['about_cta_form_pregift_subtitle'] = Settings::get('about_cta_form_pregift_subtitle');
+		$this['about_cta_form_pregift_btntext'] = Settings::get('about_cta_form_pregift_btntext');
+
+		$this['about_cta_form_gift_title'] = Settings::get('about_cta_form_gift_title');
+		$this['about_cta_form_gift_subtitle'] = Settings::get('about_cta_form_gift_subtitle');
+		$this['about_cta_form_gift_btntext'] = Settings::get('about_cta_form_gift_btntext');
+		$this['about_cta_form_gift_scripts'] = Settings::get('about_cta_form_gift_scripts');
+		$this['about_cta_form_gift_campaign'] = Settings::get('about_cta_form_gift_campaign');
+	
+		$this['about_cta_form_successgift_title'] = Settings::get('about_cta_form_successgift_title');
+		$this['about_cta_form_successgift_subtitle'] = Settings::get('about_cta_form_successgift_subtitle');
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">О фотошколе</a>
+	</div>
+	<h1 class="banner__title">О нашей фотошколе</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Что надо знать о нашей школе</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Всего за три года мы выпустили более 4000 талантливых фотографов по 12 направлениям фотографии, и по праву считаемся лидерами фотообразования в Беларуси.</h3>
+		</div>
+	</div>
+	<div class="row about-school">
+		<div class="about-school__descr-block">
+			<h4 class="descr-block__title">Фотошкола BLENDA была основана фотографом Павлом Бабарыкиным в марте 2014 года – и уже через полгода в группах по основам фотографии было по 60 человек. Теперь же в группах для новичков в среднем 15-25 человек, но при этом они стартуют каждую неделю.</h4>
+			<p class="descr-block__paragraph">Для продвинутых фотографов у нас есть целый спектр тематических курсов и мастер-классов, начиная от свадебной, детской и семейной фотографии и заканчивая food- и fashion-фотографией, куда набираем не более 5-8 человек. Мы постоянно придумываем что-то новое и актуальное, чтобы наши выпускники и коллеги по камере могли совершенствоваться в излюбленных направлениях фотографии.</p>
+			<p class="descr-block__paragraph">В нашей команде работают 12 профессиональных фотографов и узких специалистов, а также творческая команда дизайнеров, декораторов, стилистов, визажистов, флористов и фотомоделей.</p>
+		</div>
+		<figure class="about-school__img-wrapper image-wrapper">
+			<img class="img-wrapper__img" src="{{ 'assets/dist/img/about-school.jpg'|theme }}" alt="">
+		</figure>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">6 причин, почему стоит выбрать нас</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Мы создали фотошколу, в которой будет комфортно обучаться всем и каждому, независимо от возраста, образования, уровня дохода и модели фотоаппарата.</h3>
+		</div>
+	</div>
+	<div class="row advantages">
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__1.svg'|theme }}" alt="">
+			<h5 class="item__title">Опытный преподаватель</h5>
+			<p class="item__descr">Не каждый крутой фотограф — хороший учитель. Наша фотошкола собрала преподавателей, которые готовы поделиться бесценным личным опытом и доступно объяснят любую информацию. Учитесь у профессионалов с большой буквы!</p>
+		</div>
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__2.svg'|theme }}" alt="">
+			<h5 class="item__title">Детская комната</h5>
+			<p class="item__descr">У вас есть маленькие дети? Их не с кем оставить во время занятий? Не проблема! В нашей команде есть воспитатель, который позаботится о ваших малышах во время обучения. Ведь так важно успеть красиво запечатлеть взросление ваших детей!</p>
+		</div>
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__3.svg'|theme }}" alt="">
+			<h5 class="item__title">Персональный сертификат</h5>
+			<p class="item__descr">Учиться у нас — это престижно. По окончанию обучения вы получите именной сертификат, который подтверждает ваш высокий уровень в фотографии.</p>
+		</div>
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__4.svg'|theme }}" alt="">
+			<h5 class="item__title">Неизбежность результата</h5>
+			<p class="item__descr">Ваш результат — наша приоритетная цель! Вы получите реальные практические навыки и сможете фотографировать абсолютно все!</p>
+		</div>
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__5.svg'|theme }}" alt="">
+			<h5 class="item__title">Возможность стажироваться</h5>
+			<p class="item__descr">После успешного завершения обучения мы предлагаем пройти стажировку в крупнейшей фотостудии страны — Diva Studio.</p>
+		</div>
+		<div class="advantages__item">
+			<img class="item__icon" src="{{ 'assets/dist/img/icons/advantage_icon__6.svg'|theme }}" alt="">
+			<h5 class="item__title">Индивидуальный подход</h5>
+			<p class="item__descr">Мы — единственная школа фотографии, которая дает студенту возможность составить свое личное расписание занятий.</p>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Чему вы научитесь в нашей школе</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">На занятиях вы овладеете не столько сухими теоретическими знаниями, сколько приобретете бесценный опыт их применения на практике – в работе с моделью в различных локациях и условиях освещения.</h3>
+		</div>
+	</div>
+	<div class="row">
+		<!-- About school image slider -->
+		<div class="learn-steps-image-wrapper">
+			<div class="swiper-container learn-steps-image">
+				<div class="swiper-wrapper">
+					{% for item in learn_gallery %}
+						<div class="swiper-slide">
+							<div class="slide-inner-about">
+								<figure class="img-wrapper image-wrapper">
+				            		<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.title }}">
+				            	</figure>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<!-- About school description slider -->
+		<div class="learn-steps-wrapper">
+			<div class="swiper-container learn-steps-slider">
+				<!-- Add Navigation -->
+		        <div class="learn-steps__nav-block">
+					<div class="learn-steps__swiper-button-prev swiper-button-prev">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="learn-steps__swiper-button-next swiper-button-next">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+					<div class="learn-steps__swiper-pagination swiper-pagination"></div>
+				</div>
+				<div class="swiper-wrapper">
+					{% for item in learn_gallery %}
+						<div class="swiper-slide">
+							<div class="learn-steps">
+								<h5 class="learn-steps__title">{{ item.title }}</h5>
+								<p class="learn-steps__descr">{{ item.subtitle }}</p>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="cta-block">
+	<figure class="cta-block__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ 'assets/dist/img/about__cta-bg.jpg'|theme }}" alt="CTA">
+	</figure>
+	<div class="container">
+		<div class="cta-block__item">
+			<h3 class="item__title">{{ about_cta_title }}</h3>
+			<p class="item__descr">{{ about_cta_subtitle }}</p>
+			{% if about_cta_form_published == true %}
+				<button class="btn white item__btn" data-remodal-target="about-cta">
+					<span class="btn__text">{{ about_cta_btn_text }}</span>
+					<span class="btn__icon"></span>
+				</button>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Как проходят занятия в нашей фотошколе</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Занятия в нашей фотошколе по-настоящему захватывающи и интересны. Благодаря нашей атмосфере каждый почувствует себя фотографом!</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="classes-slider-active-photo-wrapper">
+			<div class="swiper-container classes-slider-active-photo">
+				<div class="swiper-wrapper">
+					{% for item in lessons_gallery %}
+						<div class="swiper-slide">
+							<div class="slide-inner-active-photo">
+								<figure class="classes__img-wrapper image-wrapper">
+									<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.title }}">
+								</figure>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<!-- Add Navigation -->
+		        <div class="classes-slider__nav-block">
+		        	<div class="classes-slider__swiper-pagination swiper-pagination active-photo"></div>
+					<div class="classes-slider__swiper-button-prev swiper-button-prev active-photo">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="classes-slider__swiper-button-next swiper-button-next active-photo">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="classes-slider-next-photo-wrapper">
+			<div class="swiper-container classes-slider-next-photo">
+				<div class="swiper-wrapper">
+					{% for item in lessons_gallery %}
+						{% if loop.index != 1 %}
+							<div class="swiper-slide">
+								<div class="slide-inner-next-photo">
+									<figure class="classes__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.alt }}">
+									</figure>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+					{% for item in lessons_gallery %}
+						{% if loop.index == 1 %}
+							<div class="swiper-slide">
+								<div class="slide-inner-next-photo">
+									<figure class="classes__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.alt }}">
+									</figure>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+				<!-- Add Navigation -->
+		        <div class="classes-slider__nav-block">
+		        	<div class="classes-slider__swiper-pagination swiper-pagination next-photo"></div>
+					<div class="classes-slider__swiper-button-prev swiper-button-prev next-photo">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="classes-slider__swiper-button-next swiper-button-next next-photo">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Истории успеха наших выпускников</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Мы радуемся победам наших выпускников. В международных конкурсах, фотовыставках и над собой. Мы гордимся, что данный нами импульс дарит силы на важные перемены в жизни.</h3>
+		</div>
+	</div>
+	<div class="row">
+		<!-- Student's photo slider -->
+	    <div class="swiper-container reviewer-photo-slider">
+	        <div class="swiper-wrapper">
+	        	{% for student in students %}
+		            <div class="swiper-slide">
+		   				<div class="slide-inner">
+			            	<figure class="review__img-wrapper image-wrapper">
+			            		<img class="img-wrapper__img" src="{{ student.photo|media }}" alt="{{ student.name }}">
+			            	</figure>
+		            	</div>
+		            </div>
+	            {% endfor %}
+	        </div>
+	        <!-- Add Arrows -->
+	        <div class="review-slider__nav-block">
+				<div class="review-slider__swiper-button-prev swiper-button-prev">
+					<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+						<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+						<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+						<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+					</svg>
+				</div>
+				<div class="review-slider__swiper-button-next swiper-button-next">
+					<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+						<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+						<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+						<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+						<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+					</svg>
+				</div>
+				<div class="review-slider__swiper-pagination swiper-pagination"></div>
+			</div>
+	    </div>
+    	<!-- Student's description slider -->
+		<div class="swiper-container gallery-middle review-descr-slider">
+	        <div class="swiper-wrapper">
+				{% for student in students %}
+		            <div class="swiper-slide">
+		            	<div class="review__text-block">
+		            		<h5 class="review__name">{{ student.name }}</h5>
+		            		<p class="review__descr">{{ student.descr }}</p>
+		            		<a class="review__link" href="../gallery/students/{{ student.slug }}">посмотреть работы студента</a>
+		            	</div>
+		            </div>
+	            {% endfor %}
+	        </div>
+	    </div>
+		<!-- Next student's photo slider -->
+		<div class="swiper-container next-reviewer-photo-slider">
+	        <div class="swiper-wrapper">
+	        	{% for student in students %}
+	        		{% if loop.index!=1 %}
+			            <div class="swiper-slide">
+			            	<div class="slide-inner">
+			            		<figure class="review__img-wrapper image-wrapper">
+				            		<img class="img-wrapper__img" src="{{ student.photo|media }}" alt="{{ student.name }}">
+				            	</figure>
+			            	</div>
+			            </div>
+		            {% endif %}
+	            {% endfor %}
+	            {% for student in students %}
+		            {% if loop.index==1 %}
+		        		<div class="swiper-slide">
+			            	<div class="slide-inner">
+			            		<figure class="review__img-wrapper image-wrapper">
+				            		<img class="img-wrapper__img" src="{{ student.photo|media }}" alt="{{ student.name }}">
+				            	</figure>
+			            	</div>
+			            </div>
+			        {% endif %}
+		        {% endfor %}
+	        </div>
+	    </div>
+	</div>
+</section>
+
+<section class="section">
+	<div class="container row align-center">
+		<div class="col_5">
+			<h2 class="section__title">Наша команда</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Чтобы ваши результаты превышали ожидания от обучения, над нашими фотокурсами работает целая команда профессионалов. Фотошкола BLENDA для нашей команды не просто работа. Это дело всей жизни, любимое хобби и вторая семья!</h3>
+		</div>
+	</div>
+	<div class="staff-slider__wrapper">
+		<div class="swiper-container staff-slider">
+			<div class="swiper-wrapper">
+				{% for item in team %}
+					<div class="swiper-slide staff">
+						<figure class="staff__img-wrapper image-wrapper">
+							<img class="img-wrapper__img" src="{{ item.photo|media }}" alt="{{ item.name }}">
+						</figure>
+						<h4 class="staff__name">{{ item.name }}</h4>
+						{% if item.type == 1 %}
+							<p class="staff__position">{{ item.position }}</p>
+						{% elseif item.type == 2 %}
+							<p class="staff__position">Преподаватель</p>
+							<h5 class="staff__specialization-title">специализация</h5>
+							<p class="staff__specialization">{{ item.specialization }}</p>
+							<a class="link staff__link" href="../teachers/{{ item.slug }}">
+								<span class="link__text">Подробнее о преподавателе</span>
+								<span class="icon-block">
+									<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__dark.svg'|theme }}" alt="icon">
+								</span>
+							</a>
+						{% endif %}
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="staff-slider__swiper-button-prev">
+			<svg class="swiper-button-prev__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+				<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+				<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+				<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+				<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+			</svg>
+		</div>
+		<div class="staff-slider__swiper-button-next">
+			<svg class="swiper-button-next__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+				<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+				<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+				<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+				<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+			</svg>
+		</div>
+		<div class="staff-slider__swiper-pagination"></div>
+	</div>
+</section>
+
+{% partial 'forms/about-page-form' %}
+
+{% put scripts %}
+	<script>
+		function getName() {
+			var name = $('div[data-remodal-id="about-cta"]').children('form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+	</script>
+{% endput %}

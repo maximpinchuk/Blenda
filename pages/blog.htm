@@ -1,0 +1,106 @@
+title = "Блог"
+url = "/blog"
+layout = "default"
+meta_title = "Блог о фотографии"
+meta_description = "Блог с полезными материалами по фотографии от фотошколы BLENDA"
+is_hidden = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Блог с полезными материалами по фотографии от фотошколы BLENDA"
+og_description = "Блог о фотографии фотошколы BLENDA"
+og_image = "/banners/bg-blog.jpg"
+
+[siteSearchInclude]
+
+[PageBanner]
+
+[RssBlog]
+emails[] = "m.pinchuk1995@gmail.com"
+==
+<?php
+use Indikator\Content\Models\Blog;
+	use Indikator\Content\Models\BlogCategories;
+
+	function onStart() {
+		$this->prepareVars();
+	}
+
+	function onFilter() {
+		$this->prepareVars();
+	}
+
+	function prepareVars() {
+		$options = post('Filter', []);
+		$this['posts'] = Blog::where('status', '=', '1')->listFrontEnd($options);
+		$this['categories'] = BlogCategories::all();
+		$this['pages'] = $this['posts']->lastPage();
+		$this['page'] = $this['posts']->currentPage();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+{% set posts = blogList.posts %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Блог</a>
+	</div>
+	<h1 class="banner__title">Наш блог</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<form data-request="onFilter" data-request-update="'blog/posts': '#posts', 'blog/pagination': '#pagination'" data-request-success="var intervalId;function checkImage() {var images = Array.from(document.images),len = images.length,counter = 0;images.forEach(function(img) {if (typeof img.naturalWidth !== 'undefined' && img.naturalWidth == 0) {return false;};counter += 1;if (len === counter) {window.clearInterval(intervalId);console.log('All images are loaded');var postsHeight = document.getElementById('posts').clientHeight + 50; document.querySelector('.pages-pagination').style = 'top:' + postsHeight +'px';};return true;});} intervalId = window.setInterval(checkImage, 1000);">
+		<div id="postsCategoryFilter">
+			<div class="tags-cloud__wrapper">
+				<h5 class="tags-cloud__title">наши рубрики</h5>
+				<div class="tags-cloud__area">
+					<div class="tags-cloud__select">
+						<span class="tags-cloud__select-input">Выберите рубрику</span>
+						<div class="tags-cloud__select-items">
+							{% for item in categories %}
+								<div class="select-items__item">
+									<input class="item__checkbox" id="{{ item.slug }}" type="checkbox" name="Filter[categories][]" value="{{ item.id }}">
+									<label class="item__label" for="{{ item.slug }}">{{ item.name }}</label>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="tags">
+						{% for item in categories %}
+							<span class="tags-cloud__tag blog" data-id="{{ item.slug }}">
+								{{ item.name }}
+								<span class="tag__close">
+									<img src="{{ 'assets/dist/img/icons/cross-tag.svg'|theme }}" alt="Cross">
+								</span>
+							</span>
+						{% endfor %}
+					</div>
+					{% partial 'blog/pagination' %}
+				</div>
+			</div>
+		</div>
+	</form>
+
+	<div id="posts">
+		{% partial 'blog/posts' %}
+	</div>
+
+	<div class="rss-popup-overlay"></div>
+	<div class="rss-popup">
+		<p class="rss-popup__title">Хотите получать свежие статьи блога прямо на почту?</p>
+		{% component 'RssBlog' %}
+	</div>
+</section>

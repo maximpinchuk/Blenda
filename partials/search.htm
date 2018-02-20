@@ -1,0 +1,21 @@
+[searchInput]
+useAutoComplete = 1
+autoCompleteResultCount = 5
+showProviderBadge = 1
+searchPage = "search-results.htm"
+==
+<div class="search-block">
+	<span class="nav__close desktop search"></span>
+	<form class="form search" action="{{ 'search-results' | page }}" method="get">
+		<fieldset class="form-fieldset">
+			<label class="form-fieldset__label" for="search">Поиск</label>
+			<input class="form-fieldset__input" id="search" type="text" name="q" placeholder="Как настраивать фотоаппарат" autocomplete="off">
+		</fieldset>
+		<fieldset class="form-fieldset">
+			<button class="form-fieldset__btn btn">
+				<span class="btn__text">поиск</span>
+				<span class="btn__icon"></span>
+			</button>
+		</fieldset>
+	</form>
+</div>

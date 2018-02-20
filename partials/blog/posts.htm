@@ -1,0 +1,23 @@
+<div class="row">
+	{% for post in posts %}
+		<div class="post-preview__wrapper">
+			<a class="post-preview blog" href="../blog/{{ post.slug }}">
+				<figure class="post-preview__img-wrapper image-wrapper">
+					<img class="img-wrapper__img" src="{{ post.image|media }}" alt="{{ post.title }}">
+				</figure>
+				<div class="post-preview__short-descr">
+					{% for item in post.tags %}
+						<span class="short-descr__author">{{ item.name }}</span>
+					{% endfor %}
+					<h3 class="short-descr__title">{{ post.title }}</h3>
+					<p class="short-descr__descr">{{ post.summary }}</p>
+					<span class="short-descr__heading">рубрика: </span>
+					{% for category in post.categories %}
+						<span class="short-descr__heading-items">{{ category.name }}</span>
+					{% endfor %}
+					<span class="short-descr__date">{{ post.published_at|date('d.m.Y') }}</span>
+				</div>
+			</a>
+		</div>
+	{% endfor %}
+</div>

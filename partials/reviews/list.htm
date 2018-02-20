@@ -1,0 +1,44 @@
+==
+{% for review in reviews %}
+	{% if review.type == 1 %}
+		<div class="review-item video">
+			<div class="review-item__video-block video-block">
+				<div class="video-block__play-icon"></div>
+				<div class="video-block__bg" style="background-image: url('{{ review.video_bg|media }}');"></div>
+				<iframe id="video" src="{{ review.video_link }}" allowfullscreen></iframe>
+			</div>
+			<div class="review-item__text-block">
+				<span class="text-block__date">{{ review.created_at|date('d.m.Y') }}</span>
+				<h4 class="text-block__name">{{ review.name }}</h4>
+				<p class="text-block__descr">{{ review.msg }}</p>
+				<span class="text-block__subtitle">курс:</span>
+				{% for course in review.courses %}
+					<a class="text-block__course-link" href="../courses/{{ course.slug }}">{{ course.title }}</a>
+				{% endfor %}
+			</div>			
+		</div>
+	{% elseif review.type == 2 %}
+		<div class="review-item text">
+			<figure class="review-item__avatar-wrapper image-wrapper">
+				<img class="avatar-wrapper__img" src="{{ review.avatar.path }}" alt="{{ review.name }}">
+			</figure>
+			<div class="review-item__text-block">
+				<span class="text-block__date">{{ review.created_at|date('d.m.Y') }}</span>
+				<h4 class="text-block__name">{{ review.name }}</h4>
+				<p class="text-block__descr">{{ review.msg }}</p>
+				<span class="text-block__subtitle">курс:</span>
+				{% for course in review.courses %}
+					<a class="text-block__course-link" href="../courses/{{ course.slug }}">{{ course.title }}</a>
+				{% endfor %}
+				{% if review.link != null %}
+					<a class="link text-block__link" href="{{ review.link }}">
+						<span class="link__text">Посмотреть работы студента</span>
+						<span class="icon-block">
+							<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__dark.svg'|theme }}" alt="icon">
+						</span>
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	{% endif %}
+{% endfor %}

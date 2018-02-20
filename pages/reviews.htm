@@ -1,0 +1,184 @@
+title = "Отзывы"
+url = "/reviews"
+layout = "default"
+meta_title = "Отзывы о фотошколе Blenda.by"
+meta_description = "Отзывы учеников и выпускников о фотошколе"
+is_hidden = 0
+banner_image = "/page_b/bg-reviews.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Отзывы учеников и выпускников о фотошколе BLENDA"
+og_description = "Благодаря отзывам к нам приходит более 40% учеников по рекомендации выпускников."
+og_image = "/banners/bg-reviews.jpg"
+
+[siteSearchInclude]
+
+[Reviews]
+emails[] = "m.pinchuk1995@gmail.com"
+form_btn_text = "оставить отзыв"
+success_title = "Спасибо!"
+success_subtitle = "Ваше мнение очень важно для нас."
+==
+<?php
+	use Spaced\Blenda\Models\ReviewsForm;
+	use Spaced\Blenda\Models\Course;
+	use Spaced\Blenda\Models\Settings;
+
+	function onStart() {
+		$this['coursesFull'] = Course::get();
+		$this->prepareVars();
+
+		$this['reviews_form_published'] = Settings::get('reviews_form_published');
+		$this['reviews_form_scenario'] = Settings::get('reviews_form_scenario');
+		$this['reviews_form_title'] = Settings::get('reviews_form_title');
+		$this['reviews_form_subtitle'] = Settings::get('reviews_form_subtitle');
+		$this['reviews_form_btntext'] = Settings::get('reviews_form_btntext');
+		$this['reviews_form_scripts'] = Settings::get('reviews_form_scripts');
+	
+		$this['reviews_form_success_title'] = Settings::get('reviews_form_success_title');
+		$this['reviews_form_success_subtitle'] = Settings::get('reviews_form_success_subtitle');
+
+		$this['reviews_form_pregift_title'] = Settings::get('reviews_form_pregift_title');
+		$this['reviews_form_pregift_subtitle'] = Settings::get('reviews_form_pregift_subtitle');
+		$this['reviews_form_pregift_btntext'] = Settings::get('reviews_form_pregift_btntext');
+
+		$this['reviews_form_gift_title'] = Settings::get('reviews_form_gift_title');
+		$this['reviews_form_gift_subtitle'] = Settings::get('reviews_form_gift_subtitle');
+		$this['reviews_form_gift_btntext'] = Settings::get('reviews_form_gift_btntext');
+		$this['reviews_form_gift_scripts'] = Settings::get('reviews_form_gift_scripts');
+		$this['reviews_form_gift_campaign'] = Settings::get('reviews_form_gift_campaign');
+	
+		$this['reviews_form_successgift_title'] = Settings::get('reviews_form_successgift_title');
+		$this['reviews_form_successgift_subtitle'] = Settings::get('reviews_form_successgift_subtitle');
+	}
+
+	function onFilter() {
+		$this->prepareVars();
+	}
+
+	function onFilterPages() {
+		$this->prepareVars();
+	}
+
+	function prepareVars() {
+		$options = post('Filter', []);
+		$this['reviews'] = ReviewsForm::orderBy('created_at', 'desc')->where('published', '=', '1')->listFrontEnd($options);
+		$this['pages'] = $this['reviews']->lastPage();
+		$this['page'] = $this['reviews']->currentPage();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<!-- $this['reviews'] = ReviewsForm::orderBy('created_at', 'desc')->where('published', '=', true)->paginate(2); -->
+
+<!-- $this['reviews'] = ReviewsForm::orderBy('created_at', 'desc')->where('published', '=', true)->paginateLoadMore(2); -->
+
+<!-- $this['reviews'] = ReviewsForm::listFrontEnd($options);
+$this['reviews'] = ReviewsForm::orderBy('created_at', 'desc')->where('published', true)->paginate(4); -->
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Отзывы</a>
+	</div>
+	<h1 class="banner__title">Отзывы</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<form data-request="onFilter" data-request-update="'reviews/list': '#reviews', 'reviews/pagination': '.pages-pagination'" data-request-success="var reviewsHeight = document.getElementById('reviews').clientHeight + 50; document.querySelector('.pages-pagination').style = 'top:' + reviewsHeight +'px';">
+	<div id="reviewsFilter">
+		<div class="tags-cloud__wrapper">
+			<h5 class="tags-cloud__title">наши курсы</h5>
+			<div class="tags-cloud__area">
+				<div class="tags-cloud__select">
+					<span class="tags-cloud__select-input">Выберите курс</span>
+					<div class="tags-cloud__select-items">
+					
+						
+							<div class="select-items__item">
+								<input class="item__checkbox" id="reset" type="radio" name="Filter[courses][]" value="">
+								<label class="item__label" for="reset">Не выбрано</label>
+							</div>
+							{% for item in coursesFull %}
+								<div class="select-items__item">
+									<input class="item__checkbox" id="{{ item.slug }}" type="radio" name="Filter[courses][]" value="{{ item.id }}">
+									<label class="item__label" for="{{ item.slug }}">{{ item.title }}</label>
+								</div>
+							{% endfor %}
+						
+					
+					</div>
+				</div>
+			</div>
+			<div class="pages-pagination">
+				{% if reviews.lastPage > 1 %}
+					{% partial 'reviews/pagination' %}
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	</form>
+
+	<div class="row" id="reviews">
+		{% if reviews.currentPage == 1 %}
+			<div class="review-item video">
+				<div class="review-item__video-block video-block">
+					<div class="video-block__play-icon"></div>
+					<div class="video-block__bg" style="background-image: url('{{ 'reviews/cropped-images/tg_image_1074726499-0-5-1150-707-1505317585.jpeg'|media }}');"></div>
+					<iframe id="video" src="https://www.youtube.com/embed/cDhc4Kt6Bls?rel=0" allowfullscreen></iframe>
+				</div>
+				<div class="review-item__text-block">
+					<h4 class="text-block__name">Дмитрий Врангель</h4>
+					<span class="text-block__subtitle">курс:</span>
+					<a class="text-block__course-link" href="http://blenda.by/courses/osnovy-fotografii-dlya-nachinayushih">Основы фотографии для начинающих</a>
+				</div>			
+			</div>
+		{% endif %}
+		{% partial 'reviews/list' %}
+	</div>
+
+	<!-- <div class="pages-pagination">
+		{% if reviews.lastPage > 1 %}
+			{{ form_ajax('onFilterPages', {update: { 'reviews/list': '#reviews' } }) }}
+				{% partial 'reviews/pagination' %}
+			{{ form_close() }}
+		{% endif %}
+	</div> -->
+</section>
+
+{% if reviews_form_published == true %}
+	<section class="section container">
+		<div class="row">
+			<div class="col_5">
+				<h2 class="section__title">{{ reviews_form_title }}</h2>
+			</div>
+			<div class="col_7">
+				<h3 class="section__subtitle">{{ reviews_form_subtitle }}</h3>
+			</div>
+		</div>
+		{% component 'Reviews' %}
+	</section>
+{% endif %}
+
+{% put scripts %}
+	<script>
+		function getName() {
+			var name = $('.form.inline-form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+	</script>
+{% endput %}

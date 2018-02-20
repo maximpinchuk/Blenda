@@ -1,0 +1,127 @@
+{% if course.inline_form_published %}
+	{% for form in inlineForms %}
+		<section class="full-container bg-white">
+			<div class="container">
+				<div class="row">
+					<div class="col_5">
+						<h2 class="section__title">{{ form.form_title }}</h2>		
+					</div>
+					<div class="col_7">
+						<h3 class="section__subtitle">{{ form.form_subtitle }}</h3>
+					</div>
+				</div>
+				{% if form.form_scenario == 1 %}
+				<form class="form inline-form course" id="zapis-inline-form" data-request="{{ zapisInlineForm }}::onFormSubmit" data-request-validate data-request-success="{{ form.form_scripts }} $('[data-remodal-id=zapis-inline-success]').remodal().open();">
+				{% elseif form.form_scenario == 2 %}
+				<form class="form inline-form course" id="zapis-inline-form" data-request="{{ zapisInlineForm }}::onFormSubmit" data-request-validate data-request-success="
+				{{ form.form_scripts }} 
+				$('[data-remodal-id=zapis-inline-pre-gift]').remodal().open();
+				$(document).ready(function(){
+					var storage = localStorage;
+					var name = $(this).find('#input-name').val();
+					localStorage.setItem('name', name);
+				})">
+				{% endif %}
+					{{ form_token() }}
+					<input type="hidden" name="course" value="{{ course.title }}">
+					
+					<div class="form_flash" id="{{ zapisInlineForm }}_forms_flash"></div>
+
+					<div class="form__row">
+						<fieldset class="form-fieldset form-group">
+							<label class="form-fieldset__label">Введите ваше имя</label>
+							<input class="form-fieldset__input" id="input-name" type="text" name="name" placeholder="Иван">
+							<span class="form-fieldset__error" data-validate-for="name"></span>
+						</fieldset>
+						<fieldset class="form-fieldset form-group">
+							<label class="form-fieldset__label">Введите ваш телефон</label>
+							<input class="form-fieldset__input input-tel" type="tel" name="tel" maxlength="20" placeholder="+ 375 (__) ___-__-__">
+							<span class="form-fieldset__error" data-validate-for="tel"></span>
+						</fieldset>
+						<button class="btn form__btn white">
+							<span class="btn__text">{{ form.form_btntext }}</span>
+							<span class="btn__icon"></span>
+						</button>
+					</div>
+					<input type="hidden" name="url" value="">
+				</form>
+			</div>
+		</section>
+
+		{% if form.form_scenario == 1 %}
+			<div class="remodal-bg">
+			    <div class="remodal small popup" data-remodal-id="zapis-inline-success">
+			        <div data-remodal-action="close" class="remodal-close">
+			            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+			                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+			            </svg>
+			        </div>
+			        <h4 class="popup__title center">{{ form.form_success_title }}</h4>
+			        <p class="popup__subtitle center">{{ form.form_success_subtitle }}</p>
+			    </div>
+			</div>
+		{% elseif form.form_scenario == 2 %}
+			<div class="remodal-bg">
+			    <div class="remodal small popup" data-remodal-id="zapis-inline-pre-gift">
+			        <div data-remodal-action="close" class="remodal-close">
+			            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+			                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+			            </svg>
+			        </div>
+			        <h4 class="popup__title center">{{ form.form_pregift_title }}</h4>
+			        <p class="popup__subtitle center">{{ form.form_pregift_subtitle }}</p>
+			        <button class="btn btn--alone large white" data-remodal-target="zapis-inline-gift">
+			            <span class="btn__text">{{ form.form_pregift_btntext }}</span>
+			            <span class="btn__icon"></span>
+			        </button>
+			    </div>
+			</div>
+
+			<div class="remodal-bg">
+			    <div class="remodal large popup" data-remodal-id="zapis-inline-gift">
+			        <div data-remodal-action="close" class="remodal-close">
+			            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+			                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+			            </svg>
+			        </div>
+			        <div class="row">
+			            <div class="col_5">
+			                <h4 class="popup__title">{{ form.form_gift_title }}</h4>
+			            </div>
+			            <div class="col_7">
+			                <p class="popup__subtitle">{{ form.form_gift_subtitle }}</p>
+			            </div>
+			        </div>
+			        <form class="form popup-form" data-request="onSendGiftSmall" data-request-update="popups: '.remodals'" data-request-validate data-request-success="{{ form.form_gift_scripts }} $('[data-remodal-id=zapis-inline-success-gift]').remodal().open(); getNameInline()" data-request-error="$('[data-remodal-id=error]').remodal().open();">
+			            <div class="form__row">
+			                <input type="hidden" name="name" value="">
+			                <input type="hidden" name="url" value="">
+			                <input type="hidden" name="campaign" value="{{ form.form_gift_campaign }}">
+			                <fieldset class="form-fieldset col_6 form-group">
+			                    <label class="form-fieldset__label">Введите вашу почту</label>
+			                    <input class="form-fieldset__input" type="email" name="email" placeholder="example@mail.com">
+			                    <span class="form-fieldset__error" data-validate-for="email"></span>
+			                </fieldset>
+			                <button class="btn form__btn small white">
+			                    <span class="btn__text">{{ form.form_gift_btntext }}</span>
+			                    <span class="btn__icon"></span>
+			                </button>
+			            </div>
+			        </form>
+			    </div>
+			</div>
+
+			<div class="remodal-bg">
+			    <div class="remodal small popup" data-remodal-id="zapis-inline-success-gift">
+			        <div data-remodal-action="close" class="remodal-close">
+			            <svg class="remodal-close__icon" width="20px" height="20px" viewBox="680.314 0 2267.721 2267.719">
+			                <polygon points="2948.035,197.169 2750.865,0 1814.175,936.691 877.483,0 680.314,197.169 1617.006,1133.86 680.314,2070.551   877.483,2267.72 1814.175,1331.029 2750.865,2267.72 2948.035,2070.551 2011.344,1133.86 "/>
+			            </svg>
+			        </div>
+			        <h4 class="popup__title center">{{ form.form_successgift_title }}</h4>
+			        <p class="popup__subtitle center">{{ form.form_successgift_subtitle }}</p>
+			    </div>
+			</div>
+		{% endif %}
+	{% endfor %}
+{% endif %}

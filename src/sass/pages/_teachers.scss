@@ -1,0 +1,102 @@
+.teachers-section {
+	@include grid-breakpoint(md) {
+		margin-bottom: 150px;
+	}
+}
+
+.teacher-card {
+	@include grid-col(12 12 8 8 8);
+	display: flex;
+	flex-direction: column;
+	margin: 100px 0 0 0;
+	padding: 0 15px;
+	@include grid-breakpoint(sm) {
+		flex-direction: row;
+		align-items: center;
+		margin: 100px 0 0 0;
+		&:nth-child(2n) {
+			@include grid-offset(null null 4 4 4);
+			flex-direction: row-reverse;
+			.teacher-card__short-info {
+				text-align: right;
+				@include grid-breakpoint(sm) {
+					margin: 0 35px 0 0;
+				}
+				@include grid-breakpoint(md) {
+					margin: 0 75px 0 0;
+				}
+			}
+		}	
+	}
+	@include grid-breakpoint(md) {
+		margin: 100px 0 0 0;
+		&:first-child {
+			margin: 0;
+		}
+	}
+	.teacher-card__img-wrapper {
+		height: 400px;
+		margin: 0 0 45px 0;
+		@include grid-breakpoint(sm) {
+			width: 360px;
+			height: 480px;
+			margin: 0;
+		}
+		.img-wrapper__img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+		}
+	}
+	.teacher-card__short-info {
+		@include grid-breakpoint(sm) {
+			margin: 0 0 0 35px;
+		}
+		@include grid-breakpoint(md) {
+			margin: 0 0 0 75px;
+		}
+		.short-info__name {
+			margin: 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 1.25rem;
+			color: #3e3e3e;
+			line-height: (48/20);
+			@include grid-breakpoint(md) {
+				transition: color 0.3s;
+				&:hover {
+					color: $accent-color;
+				}
+			}
+		}
+		.short-info__subtitle {
+			margin: 5px 0 8px 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 0.875rem;
+			color: $accent-color;
+			line-height: (30/14);
+			letter-spacing: 0.075em;
+			text-transform: uppercase;
+			@include grid-breakpoint(sm) {
+				margin: 35px 0 8px 0;
+			}
+		}
+		.short-info__specializations {
+			margin: 0 0 30px 0;
+			font-family: 'Lato', sans-serif;
+			font-size: 1.25rem;
+			color: #6c6c6c;
+			line-height: (30/20);
+			@include grid-breakpoint(sm) {
+				margin: 0 0 45px 0;
+			}
+		}
+		.short-info__link {
+			.link__text {
+				font-size: 1rem;
+			}
+		}
+	}
+}

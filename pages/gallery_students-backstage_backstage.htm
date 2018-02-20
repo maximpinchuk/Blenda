@@ -1,0 +1,77 @@
+title = "Бэкстейдж со съемок"
+url = "/gallery/photoworks-backstage/backstage/:slug"
+layout = "default"
+meta_title = "Бэкстейдж со съемок"
+meta_description = "Бэкстейдж со съемок на курса фотографии"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Бэкстейдж со съемок"
+og_description = "Бэкстейдж со съемок на курсах фотографии в фотошколе BLENDA"
+og_image = "/courses/amateur/gallery/backstage/2KlFqr5E9ro.jpg"
+
+[siteSearchInclude]
+==
+<?php
+use Spaced\Blenda\Models\Course;
+
+	function onStart() {
+		$this['course'] = Course::where('slug', '=', $this->param('slug'))->first();
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ course.gallery_backstage_banner|media }}" alt="{{ course.banner }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link" href="{{ 'gallery'|page }}">Галерея</a>
+		<a class="breadcrumbs__link" href="{{ 'gallery_students-backstage'|page }}">Фотоработы по курсам</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Бэкстейдж со съемок</a>
+	</div>
+	<h1 class="banner__title">Бэкстейдж со съемок курса</h1>
+	<p class="banner__gallery-subtitle">"{{ course.title }}"</p>
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<div class="section container">
+	<div class="msnry">
+		{% for item in course.gallery_backstage %}
+			<div class="gallery-item">
+				<a href="{{ item.image|media }}" data-rel="lightcase:slider:slideshow">
+					{% if item.size == 1 %}
+						<figure class="gallery-item__img-wrapper small image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% elseif item.size == 2 %}
+						<figure class="gallery-item__img-wrapper middle image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% elseif item.size == 3 %}
+						<figure class="gallery-item__img-wrapper large image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% else %}
+						<figure class="gallery-item__img-wrapper middle image-wrapper">
+							<img class="img-wrapper__img small" src="" data-src="{{ item.image|media }}" alt="{{ item.alt }}">
+						</figure>
+					{% endif %}
+				</a>
+			</div>
+		{% endfor %}
+	</div>
+	<div class="more-photos-block">
+		<a id="loadMore" class="more-photos-block__link" href="#">показать больше фото</a>
+	</div>
+</div>

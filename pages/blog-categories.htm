@@ -1,0 +1,127 @@
+title = "Категории блога"
+url = "/blog/categories/:slug/:page?"
+layout = "default"
+meta_title = "Категории блога"
+meta_description = "Категории блога: теги, рубрики"
+is_hidden = 0
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Категории блога: теги и рубрики"
+og_description = "Блог о фотографии фотошколы BLENDA"
+og_image = "/banners/bg-courses.jpg"
+
+[siteSearchInclude]
+==
+<?php
+use Indikator\Content\Models\BlogCategories;
+use Indikator\Content\Models\Blog;
+
+	function onStart() {
+		$this['tag'] = BlogCategories::where('slug', '=', $this->param('slug'))->first();
+                $this['posts'] = Blog::where('status', '=', '1')->paginate(10);
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ tag.image|media }}" alt="{{ tag.name }}">
+	</figure>
+	<div class="container post-banner-wrapper">
+		<div class="breadcrumbs">
+			<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+			<a class="breadcrumbs__link" href="{{ 'blog'|page }}">Блог</a>
+			<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">{{ tag.name }}</a>
+		</div>
+		<h1 class="banner__title">{{ tag.name }}</h1>
+	</div>
+</section>
+
+<section class="section container">
+	<div class="row">
+		{% for post in posts %}
+			{% for item in post.categories %}
+				{% if item.slug == tag.slug %}
+					<div class="post-preview__wrapper">
+						<a class="post-preview blog" href="../../{{ post.slug }}">
+							<figure class="post-preview__img-wrapper image-wrapper">
+								<img class="img-wrapper__img" src="{{ post.image|media }}" alt="{{ post.title }}">
+							</figure>
+							<div class="post-preview__short-descr">
+								{% for item in post.tags %}
+									<span class="short-descr__author">{{ item.name }}</span>
+								{% endfor %}
+								<h3 class="short-descr__title">{{ post.title }}</h3>
+								<p class="short-descr__descr">{{ post.summary }}</p>
+								<span class="short-descr__heading">рубрика: </span>
+								{% for item in post.categories %}
+									<span class="short-descr__heading-items">{{ item.name }}</span>
+								{% endfor %}
+								<span class="short-descr__date">{{ post.published_at|date('d.m.Y') }}</span>
+							</div>
+						</a>
+					</div>
+                                {% endif %}
+			{% endfor %}
+		{% endfor %}
+	</div>
+	{% if posts.lastPage > 1 %}
+	    <div class="pages-pagination">
+		   	{% if posts.currentPage > 1 %}
+	        	<a href="{{ posts.previousPageUrl }}">
+	           		<div class="pages-pagination__prev-page">
+						<svg class="prev-page__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+	        	</a>
+	        {% else %}
+	        	<a href="{{ ''|page }}">
+	           		<div class="pages-pagination__prev-page">
+						<svg class="prev-page__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+	        	</a>
+		   	{% endif %}
+
+			<div class="pages-pagination__pages">
+		   	{% for page in 1..posts.lastPage %}
+		       	<a class="pages__num {{ posts.currentPage == page ? 'active' : null }}" href="?page={{ page }}">{{ page }}</a>
+		   	{% endfor %}
+		   	</div>
+
+		   	{% if posts.lastPage > posts.currentPage %}
+	           	<a href="{{ posts.nextPageUrl }}">
+	        		<div class="pages-pagination__next-page">
+						<svg class="next-page__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+	           	</a>
+	        {% else %}
+	        	<a href="{{ ''|page }}">
+	        		<div class="pages-pagination__next-page">
+						<svg class="next-page__icon" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+	           	</a>
+		   	{% endif %}
+		</div>
+	{% endif %}
+</section>

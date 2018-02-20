@@ -1,0 +1,113 @@
+// Base
+@import "base/normalize";
+@import "base/typography";
+@import "base/modrnzr";
+
+
+// Utils
+@import "utils/variables";
+@import "utils/mixins";
+
+
+// Layout
+@import "layout/grid";
+@import "layout/header";
+@import "layout/footer";
+
+
+// Pages
+@import "pages/home";
+@import "pages/about";
+@import "pages/courses";
+@import "pages/course-single";
+@import "pages/post-page";
+@import "pages/gallery";
+@import "pages/gallery-page";
+@import "pages/teachers";
+@import "pages/teacher-single";
+@import "pages/news";
+@import "pages/reviews";
+@import "pages/faq";
+@import "pages/contacts";
+@import "pages/franchise";
+@import "pages/search-results";
+@import "pages/404";
+
+
+// Components
+@import "components/text";
+@import "components/navigation/navigation";
+@import "components/navigation/navigation-dropdown";
+@import "components/navigation/navigation-open-icon";
+@import "components/navigation/navigation-close-icon";
+@import "components/banner";
+@import "components/search";
+@import "components/form";
+@import "components/btn";
+@import "components/breadcrumbs";
+@import "components/news-preview";
+@import "components/tag-cloud";
+@import "components/post-preview";
+@import "components/pages-pagination";
+@import "components/socials";
+@import "components/custom-select";
+@import "components/cta-block";
+@import "components/popup";
+@import "components/rss-popup";
+
+
+// Vendors
+@import "vendors/swiper";
+@import "vendors/lightcase";
+@import "vendors/remodal";
+@import "vendors/socials--flat";
+
+
+// Vendors Extensions
+@import "vendors-extensions/swiper";
+@import "vendors-extensions/lightcase";
+
+
+// Themes
+
+
+
+body {
+	&.no-scroll {
+		overflow: hidden;
+	}
+	background: #fbfbfb;
+}
+
+.bg-white {
+	background: #fff;
+}
+
+mark {
+	background-color: $accent-color;
+}
+
+.scrollup {
+	display: none;
+	@include grid-breakpoint(sm) {
+		display: none;
+		&--visible {
+			display: block;
+		}
+	}
+	.scrollup__icon {
+		position: fixed;
+		bottom: 50px;
+		right: 30px;
+		z-index: 2;
+		width: 50px;
+		height: 50px;
+		stroke-width: 2;
+		stroke: #bebebe;
+		fill: none;
+		transition: fill 0.3s;
+		&:hover {
+			stroke: $accent-color;
+		}
+	}
+}

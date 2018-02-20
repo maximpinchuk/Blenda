@@ -1,0 +1,152 @@
+.about-school {
+	flex-direction: column-reverse;
+	margin: 80px 0 0 0;
+	@include grid-breakpoint(sm) {
+		flex-direction: row;
+		align-items: center;
+	}
+	.about-school__descr-block {
+		@include grid-col(12 12 6 6 6);
+		margin: 50px 0 0 0;
+		padding: 0 15px;
+		@include grid-breakpoint(sm) {
+			margin: 0;
+		}
+		.descr-block__title {
+			margin: 0 0 15px 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 1.125rem;
+			color: #4c4c4c;
+			line-height: (24/18);
+		}
+		.descr-block__paragraph {
+			margin: 10px 0;
+			font-family: 'Lato', sans-serif;
+			color: #313131;
+			line-height: (24/18);
+			strong {
+				font-weight: 700;
+				color: #313131;
+			}
+		}
+	}
+	.about-school__img-wrapper {
+		@include grid-col(12 12 6 5 5);
+		height: 300px;
+		margin: 0;
+		@include grid-breakpoint(sm) {
+			@include grid-offset(null null null 1 1);
+			height: 490px;
+			padding: 0 15px;
+		}
+		.img-wrapper__img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+		}
+	}
+}
+
+.advantages {
+	.advantages__item {
+		@include grid-col(12 6 6 4 4);
+		margin: 50px 0 0 0;
+		padding: 0 15px;
+		@include grid-breakpoint(sm) {
+			margin: 70px 0 0 0;
+		}
+		.item__icon {
+			width: 43px;
+			height: 35px;
+		}
+		.item__title {
+			margin: 40px 0 10px 0;
+			font-family: 'Lato', sans-serif;
+			font-weight: 700;
+			font-size: 1.125rem;
+			color: #4c4c4c;
+		}
+		.item__descr {
+			margin: 0;
+			font-family: 'Lato', sans-serif;
+			font-size: 1rem;
+			color: #313131;
+			line-height: (24/16);
+		}
+	}
+}
+
+// Staff slider item
+.staff {
+	.staff__img-wrapper {
+		width: 100%;
+		height: 320px;
+		margin: 0 0 25px 0;
+		@include grid-breakpoint(sm) {
+			// height: 410px;
+			height: 360px;
+		}
+		.img-wrapper__img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+		}
+	}
+	.staff__name {
+		margin: 0;
+		padding: 0 15px;
+		font-family: 'Lato', sans-serif;
+		font-size: 1.125rem;
+		color: $accent-color;
+		@include grid-breakpoint(sm) {
+			padding: 0;
+		}
+	}
+	.staff__position {
+		margin: 10px 0 0 0;
+		padding: 0 15px;
+		font-family: 'Lato', sans-serif;
+		font-size: 1.125rem;
+		color: #4c4c4c;
+		line-height: (32/18);
+		@include grid-breakpoint(sm) {
+			padding: 0;
+		}
+	}
+	.staff__specialization-title {
+		margin: 5px 0 0 0;
+		padding: 0 15px;
+		font-family: 'Lato', sans-serif;
+		font-size: 0.875rem;
+		color: $accent-color;
+		line-height: (32/14);
+		text-transform: uppercase;
+		@include grid-breakpoint(sm) {
+			padding: 0;
+		}
+	}
+	.staff__specialization {
+		margin: 0 0 10px 0;
+		padding: 0 15px;
+		font-family: 'Lato', sans-serif;
+		font-size: 1.125rem;
+		color: #6c6c6c;
+		line-height: (24/18);
+		@include grid-breakpoint(sm) {
+			padding: 0;
+		}
+	}
+	.staff__link {
+		padding: 0 15px;
+		@include grid-breakpoint(sm) {
+			padding: 0;
+		}
+		.link__text {
+			font-size: 1rem;
+			color: #4c4c4c;
+		}
+	}
+}

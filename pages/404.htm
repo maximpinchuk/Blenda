@@ -1,0 +1,34 @@
+title = 404
+url = "/404"
+layout = "default"
+meta_title = "Ошибка 404"
+meta_description = "Ошибка 404: данная страница не существует."
+is_hidden = 0
+banner_image = "/page_b/404.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_image = "/banners/404.jpg"
+==
+<?php
+function onEnd() {
+		$title = 'Ошибка 404 - указанная страница не найдена';
+		$this->layout->components['seoTags']->meta_title = $title;
+	}
+?>
+==
+<section class="banner page-404">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="page-404__text-block">
+		<h1 class="text-block__title">Ошибка 404</h1>
+		<p class="text-block__descr">К сожалению, запрашиваемая вами страница не найдена. Воспользуйтесь меню или поиском, чтобы найти то, что искали, или вернитесь на главную страницу.</p>
+		<a class="text-block__link link" href="{{ 'home'|page }}">
+			<span class="link__text">Перейти на главную страницу</span>
+			<span class="icon-block">
+				<img class="link__arrow" src="{{ 'assets/dist/img/icons/btn-arrow__white.svg'|theme }}" alt="icon">
+			</span>
+		</a>
+	</div>
+</section>

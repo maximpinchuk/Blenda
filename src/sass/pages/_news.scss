@@ -1,0 +1,23 @@
+.period-block {
+	.period-month {
+		position: relative;
+		display: inline-block;
+		margin: 50px 0 0 0;
+		padding: 0 65px 0 15px;
+		font-family: 'Lato', sans-serif;
+		font-weight: 700;
+		font-size: 0.75rem;
+		color: #4c4c4c;
+		text-transform: uppercase;
+		&:before {
+			content: '';
+			position: absolute;
+			top: 50%;
+			right: 0;
+			width: 50px;
+			height: 2px;
+			margin: -1px 0 0 0;
+			background: $accent-color;
+		}
+	}
+}

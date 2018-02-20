@@ -1,0 +1,114 @@
+.section__title {
+	margin: 0;
+	font-family: 'Lato', sans-serif;
+	font-weight: 700;
+	font-size: 2rem;
+	color: #4c4c4c;
+	line-height: (46/36);
+	@include grid-breakpoint(sm) {
+		font-size: 2.125rem;
+	}
+	@include grid-breakpoint(md) {
+		font-size: 2.25rem;
+	}
+	@include grid-breakpoint(lg) {
+		font-size: 2.25rem;
+	}
+}
+.section__subtitle {
+	margin: 40px 0 0 0;
+	font-family: 'Lato', sans-serif;
+	font-size: 1.125rem;
+	color: #5a5a5a;
+	line-height: (32/18);
+	@include grid-breakpoint(sm) {
+		font-size: 1.125rem;
+	}
+	@include grid-breakpoint(md) {
+		margin: 4px 0 0 0;
+		font-size: 1.125rem;
+	}
+	@include grid-breakpoint(lg) {
+		font-size: 1.125rem;
+	}
+}
+
+.link {
+	position: relative;
+	text-decoration: none;
+	&:hover {
+		.icon-block {
+			.link__arrow {
+				animation: scrollx 0.5s ease forwards;
+			}
+		}
+		.link__text {
+			&:after {
+				transform: scaleX(1);
+				transition: width 0.2s 0.4s, transform 0.3s;
+			}
+		}
+	}
+	.link__text {
+		position: relative;
+		display: inline-block;
+		margin: 0 30px 0 0;
+		font-family: 'Lato', sans-serif;
+		font-weight: 700;
+		font-size: 1.125rem;
+		color: #4c4c4c;
+		line-height: (32/18);
+		&:after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 2px;
+			background: #48d9b3;
+			transform: scaleX(0);
+			transform-origin: left;
+			transition: transform 0.3s 0.2s, width 0.2s;
+		}
+	}
+	.icon-block {
+		position: absolute;
+		top: 0;
+		right: 0;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		align-items: center;
+		.link__arrow {
+			width: 16px;
+			height: 10px;
+			transform-origin: left;
+		}
+	}
+}
+@keyframes scrollx {
+	0% {
+		transform: translate3d(0,0,0);
+		opacity: 1;
+	}
+	60% {
+		transform: translate3d(150%,0,0);
+		opacity: 1;
+	}
+	65% {
+		transform: translate3d(150%,0,0);
+		opacity: 0;
+	}
+	70% {
+		transform: translate3d(-150%,0,0);
+		opacity: 0;
+	}
+	80% {
+		transform: translate3d(-150%,0,0);
+		opacity: 1;
+	}
+	100% {
+		transform: translate3d(0,0,0);
+		opacity: 1;
+	}
+}

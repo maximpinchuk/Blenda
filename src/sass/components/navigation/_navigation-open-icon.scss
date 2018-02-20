@@ -1,0 +1,50 @@
+.nav-icon {
+	width: 33px;
+	height: 21px;
+	text-align: center;
+	&.adaptive {
+		@include grid-breakpoint(md) {
+			display: none;
+		}
+	}
+	&.desktop {
+		display: none;
+		@include grid-breakpoint(md) {
+			display: block;
+			cursor: pointer;
+			&:hover {
+				.nav-icon__line {
+					background: $accent-color;
+				}
+				.nav-icon__text {
+					color: $accent-color;
+				}
+			}
+			.nav-icon__line {
+				transition: all 0.2s;
+			}
+			.nav-icon__text {
+				transition: color 0.2s;
+			}
+		}
+	}
+	.nav-icon__line {
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: #fff;
+		&:nth-child(2) {
+			margin: 5px 0 0 0;
+		}
+	}
+	.nav-icon__text {
+		display: block;
+		margin: 6px 0 0 0;
+		font-family: 'Lato', sans-serif;
+		font-weight: 700;
+		font-size: 0.5625rem;
+		letter-spacing: 0.05em;
+		color: #fff;
+		text-transform: uppercase;
+	}
+}

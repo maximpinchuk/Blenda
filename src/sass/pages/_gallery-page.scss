@@ -1,0 +1,119 @@
+.msnry {
+	margin: 70px 0 0 0;
+}
+.gallery-item {
+	display: none;
+	width: 100%;
+	// margin: 40px 0 0 0;
+	margin: 25px 0 0 0;
+	padding: 0 15px;
+	&.backstage {
+		margin: 25px 0 0 0;
+	}
+	@include grid-breakpoint(sm) {
+		width: 50%;
+		// margin: 80px 0 0 0;
+		margin: 25px 0 0 0;
+		&.backstage {
+			margin: 25px 0 0 0;
+		}
+	}
+	.gallery-item__img-wrapper {
+		position: relative;
+		margin: 0;
+		overflow: hidden;
+		&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: #343434;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+		&:before {
+			content: url('../img/icons/zoom.svg');
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			z-index: 2;
+			width: 20px;
+			height: 20px;
+			opacity: 0;
+			transition: opacity 0.2s;
+		}
+		@include grid-breakpoint(md) {
+			&:hover {
+				&:after {
+					opacity: 0.8;
+				}
+				&:before {
+					opacity: 1;
+				}
+				.img-wrapper__img {
+					transform: scale(1.1, 1.1);
+				}
+			}
+		}
+		&.small {
+			height: 200px;
+			@include grid-breakpoint(sm) {
+				height: 455px;
+			}
+		}
+		&.middle {
+			height: 200px;
+			@include grid-breakpoint(sm) {
+				height: 575px;
+			}
+		}
+		&.large {
+			height: 200px;
+			@include grid-breakpoint(sm) {
+				height: 625px;
+			}
+		}
+		.img-wrapper__img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: top;
+			@include grid-breakpoint(md) {
+				transform-origin: center;
+				transition: transform 0.3s;
+			}
+		}
+	}
+	.gallery-item__name {
+		display: block;
+		margin: 15px 15px 0 0;
+		font-family: 'Lato', sans-serif;
+		font-size: 1rem;
+		color: #4c4c4c;
+		text-transform: uppercase;
+		text-align: right;
+		@include grid-breakpoint(sm) {
+			margin: 20px 30px 0 0;
+		}
+	}
+}
+
+.more-photos-block {
+	margin: 50px 0 0 0;
+	text-align: center;
+	&__link {
+		font-family: 'Lato', sans-serif;
+		font-size: 0.875rem;
+		color: #bababa;
+		line-height: (32/14);
+		text-transform: uppercase;
+		@include grid-breakpoint(md) {
+			transition: color 0.3s;
+			&:hover {
+				color: $accent-color;
+			}
+		}
+	}
+}

@@ -1,0 +1,299 @@
+title = "Контакты"
+url = "/contacts"
+layout = "default"
+meta_title = "Blenda.by"
+meta_description = "Контакты фотошколы BLENDA"
+is_hidden = 0
+banner_image = "/page_b/bg-contacts.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "Контакты фотошколы BLENDA"
+og_description = "Свяжитесь с нами любым удобным для вас способом!"
+og_image = "/banners/bg-contacts.jpg"
+
+[siteSearchInclude]
+
+[genericForm contactInlineForm]
+group = "Связаться с нами"
+rules[name] = "required"
+rules[tel] = "required"
+rules[email] = "required|email"
+rules[msg] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+rules_messages[email.reuired] = "Введите e-mail"
+rules_messages[email.email] = "Введите верный формат эл. почты"
+rules_messages[msg.required] = "Введите сообщение"
+form_title = "Остались вопросы?"
+form_subtitle = "Напишите нам и мы ответим на них"
+form_btn_text = "задать вопрос"
+messages_success_title = "Форма успешно отправлена"
+messages_success_subtitle = "Скоро мы с вами свяжемся"
+mail_enabled = 1
+mail_subject = "Связаться с нами"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+==
+<?php
+	use Spaced\Blenda\Models\Settings;
+
+	function onStart() {
+		$this['gallery'] = Settings::get('studio_gallery');
+
+		$this['contacts_form_published'] = Settings::get('contacts_form_published');
+		$this['contacts_form_scenario'] = Settings::get('contacts_form_scenario');
+		$this['contacts_form_title'] = Settings::get('contacts_form_title');
+		$this['contacts_form_subtitle'] = Settings::get('contacts_form_subtitle');
+		$this['contacts_form_btntext'] = Settings::get('contacts_form_btntext');
+		$this['contacts_form_scripts'] = Settings::get('contacts_form_scripts');
+	
+		$this['contacts_form_success_title'] = Settings::get('contacts_form_success_title');
+		$this['contacts_form_success_subtitle'] = Settings::get('contacts_form_success_subtitle');
+
+		$this['contacts_form_pregift_title'] = Settings::get('contacts_form_pregift_title');
+		$this['contacts_form_pregift_subtitle'] = Settings::get('contacts_form_pregift_subtitle');
+		$this['contacts_form_pregift_btntext'] = Settings::get('contacts_form_pregift_btntext');
+
+		$this['contacts_form_gift_title'] = Settings::get('contacts_form_gift_title');
+		$this['contacts_form_gift_subtitle'] = Settings::get('contacts_form_gift_subtitle');
+		$this['contacts_form_gift_btntext'] = Settings::get('contacts_form_gift_btntext');
+		$this['contacts_form_gift_scripts'] = Settings::get('contacts_form_gift_scripts');
+		$this['contacts_form_gift_campaign'] = Settings::get('contacts_form_gift_campaign');
+	
+		$this['contacts_form_successgift_title'] = Settings::get('contacts_form_successgift_title');
+		$this['contacts_form_successgift_subtitle'] = Settings::get('contacts_form_successgift_subtitle');
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">Контакты</a>
+	</div>
+	<h1 class="banner__title">Контакты</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<div class="section container">
+	<div class="row">
+		<div class="col_5">
+			<div class="contacts-block">
+				<div class="contacts-block__item">
+					<img class="item__icon" src="{{ 'assets/dist/img/icons/address.svg'|theme }}" alt="Адрес">
+					<p class="item__address">{{ address }}</p>
+				</div>
+				<div class="contacts-block__item">
+					<img class="item__icon" src="{{ 'assets/dist/img/icons/phone.svg'|theme }}" alt="Телефон">
+					{% for item in contacts %}
+						<a class="item__tel" href="tel:{{ item.tel }}">{{ item.tel }}</a>
+					{% endfor %}
+				</div>
+				<div class="contacts-block__item">
+					<img class="item__icon" src="{{ 'assets/dist/img/icons/email.svg'|theme }}" alt="Почта">
+					<a class="item__email" href="mailto:{{ email }}">{{ email }}</a>
+				</div>
+				<div class="social-block">
+					<p class="social-block__title">Мы в социальных сетях</p>
+					<a class="social-block__link" href="{{ vk_link }}" target="_blank">Вконтакте</a>
+					<a class="social-block__link" href="{{ fb_link }}" target="_blank">Facebook</a>
+					<a class="social-block__link" href="{{ insta_link }}" target="_blank">Instagram</a>
+				</div>
+			</div>
+		</div>
+		<div id="map" class="map">
+			
+		</div>
+	</div>
+</div>
+
+<section class="section container">
+	<div class="row">
+		<div class="col_5">
+			<h2 class="section__title">Наш офис и фотостудия</h2>		
+		</div>
+		<div class="col_7">
+			<h3 class="section__subtitle">Занятия проходят в просторных залах фотостудии «Дива» (100 кв.м.) по тому же адресу, где и располагается главный офис фотошколы BLENDA.</h3>
+		</div>
+	</div>
+	<div class="row">
+		<div class="classes-slider-active-photo-wrapper">
+			<div class="swiper-container classes-slider-active-photo">
+				<div class="swiper-wrapper">
+					{% for item in gallery %}
+						<div class="swiper-slide">
+							<div class="slide-inner-about">
+								<figure class="classes__img-wrapper image-wrapper">
+									<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.alt }}">
+								</figure>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<!-- Add Navigation -->
+		        <div class="classes-slider__nav-block">
+		        	<div class="classes-slider__swiper-pagination swiper-pagination active-photo"></div>
+					<div class="classes-slider__swiper-button-prev swiper-button-prev active-photo">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="classes-slider__swiper-button-next swiper-button-next active-photo">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="classes-slider-next-photo-wrapper">
+			<div class="swiper-container classes-slider-next-photo">
+				<div class="swiper-wrapper">
+					{% for item in gallery %}
+						{% if loop.index!=1 %}
+							<div class="swiper-slide">
+								<div class="slide-inner">
+									<figure class="classes__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.alt }}">
+									</figure>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+					{% for item in gallery %}
+						{% if loop.index==1 %}
+							<div class="swiper-slide">
+								<div class="slide-inner">
+									<figure class="classes__img-wrapper image-wrapper">
+										<img class="img-wrapper__img" src="{{ item.image|media }}" alt="{{ item.alt }}">
+									</figure>
+								</div>
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+				<!-- Add Navigation -->
+		        <div class="classes-slider__nav-block">
+		        	<div class="classes-slider__swiper-pagination swiper-pagination next-photo"></div>
+					<div class="classes-slider__swiper-button-prev swiper-button-prev next-photo">
+						<svg class="swiper-button-prev__icon swiper-button-prev__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M0.6,4.8h15.5c0.1,0,0.2,0.1,0.2,0.2c0,0.1-0.1,0.2-0.2,0.2H0.6C0.4,5.2,0.3,5.1,0.3,5C0.3,4.9,0.4,4.8,0.6,4.8L0.6,4.8z     M0.6,4.8"/>
+							<path d="M0.6,4.5h15.5c0.3,0,0.6,0.2,0.6,0.5c0,0.3-0.3,0.5-0.6,0.5H0.6C0.3,5.5,0,5.3,0,5C0,4.7,0.3,4.5,0.6,4.5z M0.6,4.8    L0.6,4.8L0.6,4.8z M0.6,4.8L0.6,4.8l0,0.3h0V4.8z"/>
+							<path d="M5,0.3c0,0,0.1,0,0.1,0.1c0.1,0.1,0.1,0.2,0,0.3L0.8,5l4.4,4.4c0.1,0.1,0.1,0.2,0,0.3c-0.1,0.1-0.2,0.1-0.3,0L0.4,5.1    c0,0-0.1-0.1-0.1-0.1c0,0,0-0.1,0.1-0.1l4.5-4.5C4.9,0.4,5,0.3,5,0.3L5,0.3z M5,0.3"/>
+							<path d="M5,0c0.1,0,0.3,0.1,0.4,0.2c0.1,0.1,0.2,0.2,0.2,0.4c0,0.1-0.1,0.3-0.2,0.4L1.2,5l4.1,4.1c0.1,0.1,0.2,0.2,0.2,0.4    c0,0.1-0.1,0.3-0.2,0.4C5.3,9.9,5.1,10,5,10h0c-0.1,0-0.3-0.1-0.4-0.2L0.2,5.4C0.1,5.3,0,5.1,0,5c0-0.1,0.1-0.3,0.1-0.4l4.5-4.5    C4.7,0.1,4.9,0,5,0z M4.9,0.4L4.9,0.4C4.9,0.4,4.9,0.4,4.9,0.4z M4.9,9.6L4.9,9.6L4.9,9.6z"/>
+						</svg>
+					</div>
+					<div class="classes-slider__swiper-button-next swiper-button-next next-photo">
+						<svg class="swiper-button-next__icon swiper-button-next__icon--dark" x="0px" y="0px" viewBox="0 0 16.7 10">
+							<path d="M16.1,5.2H0.6C0.4,5.2,0.3,5.1,0.3,5c0-0.1,0.1-0.2,0.2-0.2h15.5c0.1,0,0.2,0.1,0.2,0.2C16.3,5.1,16.2,5.2,16.1,5.2    L16.1,5.2z M16.1,5.2"/>
+							<path d="M16.1,5.5H0.6C0.3,5.5,0,5.3,0,5c0-0.3,0.3-0.5,0.6-0.5h15.5c0.3,0,0.6,0.2,0.6,0.5C16.7,5.3,16.4,5.5,16.1,5.5z     M16.1,5.2L16.1,5.2L16.1,5.2z M16.1,5.2L16.1,5.2l0-0.3h0V5.2z"/>
+							<path d="M11.7,9.7c0,0-0.1,0-0.1-0.1c-0.1-0.1-0.1-0.2,0-0.3L15.9,5l-4.4-4.4c-0.1-0.1-0.1-0.2,0-0.3c0.1-0.1,0.2-0.1,0.3,0    l4.5,4.5c0,0,0.1,0.1,0.1,0.1c0,0,0,0.1-0.1,0.1l-4.5,4.5C11.7,9.6,11.7,9.7,11.7,9.7L11.7,9.7z M11.7,9.7"/>
+							<path d="M11.7,10c-0.1,0-0.3-0.1-0.4-0.2c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4L15.4,5l-4.1-4.1    c-0.1-0.1-0.2-0.2-0.2-0.4c0-0.1,0.1-0.3,0.2-0.4C11.4,0.1,11.5,0,11.7,0h0c0.1,0,0.3,0.1,0.4,0.2l4.5,4.5    c0.1,0.1,0.1,0.2,0.1,0.4c0,0.1-0.1,0.3-0.1,0.4L12,9.8C11.9,9.9,11.8,10,11.7,10z M11.8,9.6L11.8,9.6C11.8,9.6,11.8,9.6,11.8,9.6    z M11.8,0.4L11.8,0.4L11.8,0.4z"/>
+						</svg>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+{% partial 'forms/contacts-page-form' %}
+
+{% put scripts %}
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDPhI9_QZm1Wgl5nnFBReLjtMgDaOP7a5E&callback=initMap"
+    async defer></script>
+	<script>
+		var map;
+		function initMap() {
+			var blendaPosition = {lat: 53.890350, lng: 27.568754};
+			var pointOne = {lat:53.893703, lng: 27.570265},
+				pointTwo = {lat: 53.894145, lng: 27.568786},
+				pointThree = {lat: 53.891803, lng: 27.566815},
+				pointFour = {lat: 53.891573, lng: 27.566939},
+				pointFive = {lat: 53.890958, lng: 27.566449},
+				pointSix = {lat: 53.890307, lng: 27.568445};
+
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: {lat: 53.891363, lng: 27.567507},
+				zoom: 16,
+				scrollwheel: false
+			});
+			var marker = new google.maps.Marker({
+      			position: blendaPosition,
+      			icon: '{{ 'assets/dist/img/icons/placeholder.svg'|theme }}',
+      			// size: new google.maps.Size(20, 32),
+          		map: map
+        	});
+
+        	var firstPathPart = new google.maps.Polyline({
+			    path: [pointOne, pointTwo],
+			    geodesic: true,
+			    strokeColor: '#48d9b3',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			});
+			var secondPathPart = new google.maps.Polyline({
+			    path: [pointTwo, pointThree],
+			    geodesic: true,
+			    strokeColor: '#48d9b3',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			});
+			var thirdPathPart = new google.maps.Polyline({
+			    path: [pointThree, pointFour],
+			    geodesic: true,
+			    strokeColor: '#48d9b3',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			});
+			var fourPathPart = new google.maps.Polyline({
+			    path: [pointFour, pointFive],
+			    geodesic: true,
+			    strokeColor: '#48d9b3',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			});
+			var fifthPathPart = new google.maps.Polyline({
+			    path: [pointFive, pointSix],
+			    geodesic: true,
+			    strokeColor: '#48d9b3',
+			    strokeOpacity: 1.0,
+			    strokeWeight: 2
+			});
+		  	firstPathPart.setMap(map);
+		  	secondPathPart.setMap(map);
+		  	thirdPathPart.setMap(map);
+		  	fourPathPart.setMap(map);
+		  	fifthPathPart.setMap(map);
+		}
+	</script>
+	<script>
+		function getName() {
+			var name = $('.form.inline-form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+	</script>
+{% endput %}

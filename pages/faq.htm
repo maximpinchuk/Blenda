@@ -1,0 +1,155 @@
+title = "FAQ"
+url = "/faq"
+layout = "default"
+meta_title = "FAQ: ответы на часто задаваемые вопросы о фотошколе"
+meta_description = "FAQ: задайте свой вопрос, если не нашли ответа в часто задаваемых вопросах о фотошколе"
+is_hidden = 0
+banner_image = "/page_b/bg-faq.jpg"
+btn_check = 0
+robot_index = "index"
+robot_follow = "follow"
+og_title = "FAQ: ответы на часто задаваемые вопросы"
+og_description = "Мы ответим на любой ваш вопрос про обучение фотографии в Минске."
+og_image = "/banners/bg-faq.jpg"
+
+[siteSearchInclude]
+
+[genericForm faqInlineForm]
+group = "Вопрос"
+rules[name] = "required"
+rules[tel] = "required"
+rules[email] = "required|email"
+rules[msg] = "required"
+rules_messages[name.required] = "Введите имя"
+rules_messages[tel.required] = "Введите телефон"
+rules_messages[email.reuired] = "Введите e-mail"
+rules_messages[email.email] = "Введите верный формат эл. почты"
+rules_messages[msg.required] = "Введите сообщение"
+form_title = "Задать вопрос"
+form_subtitle = "Если на этой странице Вы не нашли ответа на свой вопрос, пожалуйста, задайте его, воспользовавшись формой ниже, – и мы ответим на него по почте или по телефону."
+form_btn_text = "задать вопрос"
+messages_success_title = "Форма успешно отправлена"
+messages_success_subtitle = "Скоро мы с вами свяжемся"
+mail_enabled = 1
+mail_subject = "Вопрос с сайта"
+mail_recipients[] = "m.pinchuk1995@gmail.com"
+reset_form = 0
+inline_errors = "display"
+js_on_error = "$('[data-remodal-id=error]').remodal().open();"
+sanitize_data = "disabled"
+anonymize_ip = "disabled"
+==
+<?php
+	use Spaced\Blenda\Models\Faq;
+	use Spaced\Blenda\Models\Settings;
+
+	function onStart() {
+		$this['faq_odd'] = Faq::whereRaw('MOD(id, 2) = 1')->get();
+		$this['faq_even'] = Faq::whereRaw('MOD(id, 2) = 0')->get();
+
+		$this['faq_form_published'] = Settings::get('faq_form_published');
+		$this['faq_form_scenario'] = Settings::get('faq_form_scenario');
+		$this['faq_form_title'] = Settings::get('faq_form_title');
+		$this['faq_form_subtitle'] = Settings::get('faq_form_subtitle');
+		$this['faq_form_btntext'] = Settings::get('faq_form_btntext');
+		$this['faq_form_scripts'] = Settings::get('faq_form_scripts');
+	
+		$this['faq_form_success_title'] = Settings::get('faq_form_success_title');
+		$this['faq_form_success_subtitle'] = Settings::get('faq_form_success_subtitle');
+
+		$this['faq_form_pregift_title'] = Settings::get('faq_form_pregift_title');
+		$this['faq_form_pregift_subtitle'] = Settings::get('faq_form_pregift_subtitle');
+		$this['faq_form_pregift_btntext'] = Settings::get('faq_form_pregift_btntext');
+
+		$this['faq_form_gift_title'] = Settings::get('faq_form_gift_title');
+		$this['faq_form_gift_subtitle'] = Settings::get('faq_form_gift_subtitle');
+		$this['faq_form_gift_btntext'] = Settings::get('faq_form_gift_btntext');
+		$this['faq_form_gift_scripts'] = Settings::get('faq_form_gift_scripts');
+		$this['faq_form_gift_campaign'] = Settings::get('faq_form_gift_campaign');
+	
+		$this['faq_form_successgift_title'] = Settings::get('faq_form_successgift_title');
+		$this['faq_form_successgift_subtitle'] = Settings::get('faq_form_successgift_subtitle');
+	}
+?>
+==
+{% component 'siteSearchInclude' %}
+
+<section class="banner">
+	<figure class="banner__img-wrapper image-wrapper">
+		<img class="img-wrapper__img" src="{{ this.page.banner_image|media }}" alt="{{ this.page.title }}">
+	</figure>
+	<div class="breadcrumbs">
+		<a class="breadcrumbs__link" href="{{ 'home'|page }}">Главная</a>
+		<a class="breadcrumbs__link breadcrumbs__link--active" href="{{ ''|page }}">FAQ</a>
+	</div>
+	<h1 class="banner__title">Часто задаваемые вопросы</h1>
+	{% component 'PageBanner' %}
+	<span class="scroll-down">
+		<svg class="scroll-down__icon" viewBox="0 0 114.4 167.5">
+			<path d="M57.4,164.4L57.4,164.4c-29.5,0-53.7-24.2-53.7-53.7V57c0-29.5,24.2-53.7,53.7-53.7h0C86.9,3.4,111,27.5,111,57
+						  v53.7C111,140.2,86.9,164.4,57.4,164.4z"></path>
+			<line class="icon__scroll" x1="57.4" y1="25.3" x2="57.4" y2="54.3"></line>
+		</svg>
+		пролистайте
+	</span>
+</section>
+
+<section class="section container">
+	<!-- <div class="faq-items__wrapper"> -->
+		<div class="row">
+			<div class="col_6">
+				{% for item in faq_odd %}
+					<div class="faq-item__wrapper">
+						<div class="faq-item">
+							<div class="faq-item__question">
+								{% if item.id < 10 %}
+									<span class="question__num">вопрос 0{{ item.id }}</span>
+								{% else %}
+									<span class="question__num">вопрос {{ item.id }}</span>
+								{% endif %}
+								<h4 class="question__title">{{ item.title }}</h4>
+								<p class="question__text">{{ item.quastion }}</p>
+							</div>
+							<div class="faq-item__answer">
+								<span class="answer__title">ответ</span>
+								<p class="answer__text">{{ item.answer }}</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+			<div class="col_6">
+				{% for item in faq_even %}
+					<div class="faq-item__wrapper">
+						<div class="faq-item">
+							<div class="faq-item__question">
+								{% if item.id < 10 %}
+									<span class="question__num">вопрос 0{{ item.id }}</span>
+								{% else %}
+									<span class="question__num">вопрос {{ item.id }}</span>
+								{% endif %}
+								<h4 class="question__title">{{ item.title }}</h4>
+								<p class="question__text">{{ item.quastion }}</p>
+							</div>
+							<div class="faq-item__answer">
+								<span class="answer__title">ответ</span>
+								<p class="answer__text">{{ item.answer }}</p>
+							</div>
+						</div>
+					</div>
+				{% endfor %}
+			</div>
+		</div>
+	<!-- </div> -->
+</section>
+
+{% partial 'forms/faq-page-form' %}
+
+{% put scripts %}
+	<script>
+		function getName() {
+			var name = $('.form.inline-form').find('input[name="name"]').val();
+			localStorage.setItem('name', name);
+		};
+	</script>
+{% endput %}
